@@ -19,8 +19,6 @@ import java.util.concurrent.TimeUnit;
  * @date 2018/3/8 13:52
  */
 public class Plugin {
-    /** 延迟执行 */
-    private static ScheduledExecutorService reportExector = Executors.newScheduledThreadPool(5);
 
     public static Socket connect(String host, int port) {
         Socket socket = null;
@@ -95,12 +93,10 @@ public class Plugin {
             in =  new BufferedReader(new InputStreamReader(socket.getInputStream()));
             out = new PrintWriter(socket.getOutputStream());
 
-            while (true) {
-                List<TaskResult> taskResults = TaskResultCache.get(ClientHandler.TASK_TYPE);
-                if(taskResults != null && taskResults.size() > 0) {
-                    String packet = ClientHandler.report(taskResults);
-                    writeAndFlush(out, packet);
-                }
+            List<TaskResult> taskResults = TaskResultCache.get(ClientHandler.TASK_TYPE);
+            if(taskResults != null && taskResults.size() > 0) {
+                String packet = ClientHandler.report(taskResults);
+                writeAndFlush(out, packet);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -113,12 +109,5 @@ public class Plugin {
         final int port = Const.BIO_PORT;
 
         communicate(connect("127.0.0.1", port));
-
-        reportExector.schedule(new Runnable() {
-            @Override
-            public void run() {
-                report(connect("127.0.0.1", port));
-            }
-        }, 3, TimeUnit.SECONDS);
     }
 }
