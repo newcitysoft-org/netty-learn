@@ -1,9 +1,9 @@
 package com.newcitysoft.study.netty.scene.socket.netty;
 
 import com.alibaba.fastjson.JSONObject;
-import com.newcitysoft.study.zookeeper.module.net.scene.socket.entity.DataPacket;
-import com.newcitysoft.study.zookeeper.module.net.scene.socket.entity.PacketType;
-import com.newcitysoft.study.zookeeper.module.net.scene.socket.entity.Task;
+import com.newcitysoft.study.netty.work.entity.DataPacket;
+import com.newcitysoft.study.netty.work.entity.PacketType;
+import com.newcitysoft.study.netty.work.entity.Task;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerAdapter;

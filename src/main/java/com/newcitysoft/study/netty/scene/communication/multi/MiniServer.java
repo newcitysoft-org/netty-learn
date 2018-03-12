@@ -1,8 +1,8 @@
 package com.newcitysoft.study.netty.scene.communication.multi;
 
-import com.newcitysoft.study.zookeeper.module.net.scene.communication.multi.handler.AsyncHandler;
-import com.newcitysoft.study.zookeeper.module.net.scene.communication.multi.handler.FileHandler;
-import com.newcitysoft.study.zookeeper.module.net.scene.communication.multi.handler.TextHandler;
+import com.newcitysoft.study.netty.scene.communication.multi.handler.AsyncHandler;
+import com.newcitysoft.study.netty.scene.communication.multi.handler.FileHandler;
+import com.newcitysoft.study.netty.scene.communication.multi.handler.TextHandler;
 
 import java.io.IOException;
 import java.net.ServerSocket;

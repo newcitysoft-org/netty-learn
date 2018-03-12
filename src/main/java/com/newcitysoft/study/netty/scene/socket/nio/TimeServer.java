@@ -1,6 +1,6 @@
 package com.newcitysoft.study.netty.scene.socket.nio;
 
-import com.newcitysoft.study.zookeeper.module.net.scene.socket.Const;
+import com.newcitysoft.study.netty.scene.socket.Const;
 
 /**
  * @author lixin.tian@renren-inc.com

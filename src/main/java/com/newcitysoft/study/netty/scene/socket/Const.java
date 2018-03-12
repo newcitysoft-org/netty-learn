@@ -6,6 +6,6 @@ package com.newcitysoft.study.netty.scene.socket;
  */
 public class Const {
 
-    public static final int BIO_PORT = 7788;
-    public static final int NETTY_PORT = 6789;
+    public static final int BIO_PORT = 1111;
+    public static final int NETTY_PORT = 4567;
 }

@@ -1,7 +1,7 @@
 package com.newcitysoft.study.netty.scene.socket.fakeasync;
 
-import com.newcitysoft.study.zookeeper.module.net.scene.socket.Const;
-import com.newcitysoft.study.zookeeper.module.net.scene.socket.bio.TimeServerHandler;
+import com.newcitysoft.study.netty.scene.socket.Const;
+import com.newcitysoft.study.netty.scene.socket.bio.TimeServerHandler;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;

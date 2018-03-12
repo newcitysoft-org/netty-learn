@@ -1,6 +1,6 @@
 package com.newcitysoft.study.netty.scene.socket.netty;
 
-import com.newcitysoft.study.zookeeper.module.net.scene.socket.Const;
+import com.newcitysoft.study.netty.scene.socket.Const;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
