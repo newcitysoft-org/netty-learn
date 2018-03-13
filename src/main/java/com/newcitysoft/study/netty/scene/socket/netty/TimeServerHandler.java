@@ -1,7 +1,7 @@
 package com.newcitysoft.study.netty.scene.socket.netty;
 
 import com.alibaba.fastjson.JSONObject;
-import com.newcitysoft.study.netty.work.entity.DataPacket;
+import com.newcitysoft.study.netty.work.entity.Message;
 import com.newcitysoft.study.netty.work.entity.PacketType;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
@@ -49,7 +49,7 @@ public class TimeServerHandler extends ChannelHandlerAdapter {
                 result = new Date(System.currentTimeMillis()).toString();
             }else {
                 try {
-                    DataPacket<String> packet = JSONObject.parseObject(request, DataPacket.class);
+                    Message<String> packet = JSONObject.parseObject(request, Message.class);
                     PacketType packetType = packet.getType();
                     switch (packetType) {
                         case SYNCGET:

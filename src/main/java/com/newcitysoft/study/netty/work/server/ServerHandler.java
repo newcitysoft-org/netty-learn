@@ -1,7 +1,9 @@
 package com.newcitysoft.study.netty.work.server;
 
 import com.alibaba.fastjson.JSONObject;
-import com.newcitysoft.study.netty.work.entity.DataPacket;
+import com.newcitysoft.study.netty.work.entity.Header;
+import com.newcitysoft.study.netty.work.entity.Message;
+import com.newcitysoft.study.netty.work.entity.MessageType;
 import com.newcitysoft.study.netty.work.entity.PacketType;
 import com.newcitysoft.study.netty.work.entity.Result;
 import com.newcitysoft.study.netty.work.entity.SendItem;
@@ -76,8 +78,8 @@ public class ServerHandler extends Thread{
      * @param req
      * @return
      */
-    public static DataPacket decode(String req) {
-        return JSONObject.parseObject(req, DataPacket.class);
+    public static Message decode(String req) {
+        return JSONObject.parseObject(req, Message.class);
     }
 
     /**
@@ -85,13 +87,13 @@ public class ServerHandler extends Thread{
      * @param packet
      * @return
      */
-    public static DataPacket handle(DataPacket packet) {
-        System.out.println(packet.getType());
-        DataPacket<Result> resp = checkPacket(packet);
+    public static Message handle(Message packet) {
+        System.out.println(MessageType.fromTypeName(packet.getHeader().getType()));
+        Message resp = checkPacket(packet);
         if(resp.getBody().getResult() == Result.RESULT_FAILURE) {
             return resp;
         }else {
-            DataPacket result = new DataPacket();
+            Message result = new Message();
             switch (packet.getType()) {
                 case SYNCGET:
                     result = handleSyncGet(packet);
@@ -123,8 +125,9 @@ public class ServerHandler extends Thread{
      * @param packet
      * @return
      */
-    private static DataPacket handleSyncGet(DataPacket packet){
-        DataPacket resp = new DataPacket();
+    private static Message handleSyncGet(Message packet){
+        Message resp = new Message();
+        Header header = new Header();
         try{
             String body = JSONObject.toJSONString(packet.getBody());
             Task req = JSONObject.parseObject(body, Task.class);
@@ -135,7 +138,11 @@ public class ServerHandler extends Thread{
             list.add(new SendItem(getTaskId(), "15040124451", System.currentTimeMillis()));
             list.add(new SendItem(getTaskId(), "15566543218", System.currentTimeMillis()));
 
-            resp.setType(PacketType.SEND);
+
+
+            header.setType(MessageType.SEND.value());
+
+            resp.setHeader(header);
             resp.setBody(list);
 
         }catch (Exception e) {
@@ -159,8 +166,8 @@ public class ServerHandler extends Thread{
      * @param packet
      * @return
      */
-    private static DataPacket handleAsyncGet(DataPacket packet){
-        DataPacket resp = new DataPacket();
+    private static Message handleAsyncGet(Message packet){
+        Message resp = new Message();
         return resp;
     }
 
@@ -169,8 +176,8 @@ public class ServerHandler extends Thread{
      * @param packet
      * @return
      */
-    private static DataPacket handleReport(DataPacket packet){
-        DataPacket resp = new DataPacket();
+    private static Message handleReport(Message packet){
+        Message resp = new Message();
         System.out.println(packet.getBody());
         return resp;
     }
@@ -180,8 +187,8 @@ public class ServerHandler extends Thread{
      * @param packet
      * @return
      */
-    private static DataPacket handleResponse(DataPacket packet){
-        DataPacket resp = new DataPacket();
+    private static Message handleResponse(Message packet){
+        Message resp = new Message();
         return resp;
     }
 
@@ -206,29 +213,35 @@ public class ServerHandler extends Thread{
      * @param packet
      * @return
      */
-    private static DataPacket<Result> checkPacket(DataPacket packet) {
-        DataPacket<Result> resp = new DataPacket<>();
+    private static Message checkPacket(Message packet) {
+        Message resp = new Message();
         Result result = new Result();
-        System.out.println(JSONObject.toJSONString(packet));
+
         if(packet == null || packet.getBody().toString().length() == 0) {
             result = packagingErrorPacket(Result.Code.ERROR_NULL_PACKET, "空数据包！");
-        }else if(packet.getType() == null) {
-            result = packagingErrorPacket(Result.Code.ERROR_NULL_TYPE, "空类型!");
-        }else if(!PacketType.contains(packet.getType().getType().toUpperCase())) {
+        }else if(!MessageType.contains(packet.getHeader().getType())) {
             result = packagingErrorPacket(Result.Code.ERROR_EVENT, "没有该事件存在！");
         }
+//        else if(packet.getHeader().getType()) {
+//            result = packagingErrorPacket(Result.Code.ERROR_NULL_TYPE, "空类型!");
+//        }
+        Header header = new Header();
 
-        resp.setType(PacketType.RESPONSE);
+        header.setType(MessageType.RESPONSE.value());
+        resp.setHeader(header);
         resp.setBody(result);
 
         return resp;
     }
 
     public static void main(String[] args) {
-        DataPacket<Task> dataPacket = new DataPacket();
+        Message dataPacket = new Message();
         Task task = new Task("md5", 20);
+        Header header = new Header();
 
-        dataPacket.setType(PacketType.SYNCGET);
+        header.setType(MessageType.SYNC_GET.value());
+
+        dataPacket.setHeader(header);
         dataPacket.setBody(task);
 
         System.out.println(JSONObject.toJSONString(dataPacket));

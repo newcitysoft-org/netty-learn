@@ -2,7 +2,7 @@ package com.newcitysoft.study.netty.work.client;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.newcitysoft.study.netty.work.entity.DataPacket;
+import com.newcitysoft.study.netty.work.entity.Message;
 import com.newcitysoft.study.netty.work.entity.PacketType;
 import com.newcitysoft.study.netty.work.entity.SendItem;
 import com.newcitysoft.study.netty.work.entity.Task;
@@ -19,7 +19,7 @@ import java.util.concurrent.Executors;
 public class ClientHandler {
 
     public static final String TASK_TYPE = "md5";
-    private static DataPacket packet = new DataPacket();
+    private static Message packet = new Message();
     private static Task task = new Task("md5", 20);
     static {
         packet.setType(PacketType.SYNCGET);
@@ -34,7 +34,7 @@ public class ClientHandler {
         try {
 
             System.out.println(resp);
-            DataPacket<String> packet = JSONObject.parseObject(resp, DataPacket.class);
+            Message<String> packet = JSONObject.parseObject(resp, Message.class);
 
             List<SendItem> list = JSONArray.parseArray(JSONObject.toJSONString(packet.getBody()), SendItem.class);
             System.out.println(list.size());
@@ -48,7 +48,7 @@ public class ClientHandler {
     }
 
     public static String report(List<TaskResult> results) {
-        DataPacket packet = new DataPacket();
+        Message packet = new Message();
 
         packet.setType(PacketType.REPORT);
         packet.setBody(results);

@@ -1,14 +1,10 @@
 package com.newcitysoft.study.netty.work.server;
 
 import com.alibaba.fastjson.JSONObject;
-import com.newcitysoft.study.netty.work.entity.DataPacket;
-import com.newcitysoft.study.netty.work.entity.PacketType;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerAdapter;
 import io.netty.channel.ChannelHandlerContext;
-
-import java.util.Date;
 
 /**
  * @author lixin.tian@renren-inc.com
@@ -30,7 +26,6 @@ public class ServerHandler2 extends ChannelHandlerAdapter {
         ByteBuf resp = Unpooled.copiedBuffer(data.getBytes());
         ctx.writeAndFlush(resp);
     }
-
 
     @Override
     public void channelReadComplete(ChannelHandlerContext ctx) throws Exception {
