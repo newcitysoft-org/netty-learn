@@ -10,12 +10,15 @@ import com.newcitysoft.study.netty.work.client.Plugin;
 public class Client1 {
     public static void main(String[] args) {
         final int port = Const.BIO_PORT;
+        final String host = "127.0.0.1";
+
         new Thread(new Runnable() {
             @Override
             public void run() {
-                Plugin.report(Plugin.connect("127.0.0.1", port));
+                Plugin.report(Plugin.connect(host, port));
             }
         }).start();
-        Plugin.communicate(Plugin.connect("127.0.0.1", port));
+
+        Plugin.communicate(Plugin.connect(host, port));
     }
 }
