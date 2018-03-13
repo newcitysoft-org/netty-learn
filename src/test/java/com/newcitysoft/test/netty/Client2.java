@@ -16,12 +16,13 @@ public class Client2 {
     private static ScheduledExecutorService reportExector = Executors.newScheduledThreadPool(5);
     public static void main(String[] args) {
         final int port = Const.BIO_PORT;
-        reportExector.schedule(new Runnable() {
-            @Override
-            public void run() {
-                Plugin.report(Plugin.connect("127.0.0.1", port));
-            }
-        }, 3, TimeUnit.SECONDS);
+//        reportExector.schedule(new Runnable() {
+//            @Override
+//            public void run() {
+//
+//            }
+//        }, 3, TimeUnit.SECONDS);
 
+        Plugin.report(Plugin.connect("127.0.0.1", port));
     }
 }

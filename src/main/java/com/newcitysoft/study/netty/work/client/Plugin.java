@@ -92,13 +92,17 @@ public class Plugin {
         try {
             in =  new BufferedReader(new InputStreamReader(socket.getInputStream()));
             out = new PrintWriter(socket.getOutputStream());
-
-            List<TaskResult> taskResults = TaskResultCache.get(ClientHandler.TASK_TYPE);
-            if(taskResults != null && taskResults.size() > 0) {
-                String packet = ClientHandler.report(taskResults);
-                writeAndFlush(out, packet);
+            while (true) {
+                Thread.sleep(3000);
+                List<TaskResult> taskResults = TaskResultCache.get(ClientHandler.TASK_TYPE);
+                if(taskResults != null && taskResults.size() > 0) {
+                    String packet = ClientHandler.report(taskResults);
+                    writeAndFlush(out, packet);
+                }
             }
         } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
             e.printStackTrace();
         } finally {
             close(in, out, socket);
