@@ -2,6 +2,7 @@ package com.newcitysoft.study.netty.scene.socket.netty;
 
 import com.alibaba.fastjson.JSONObject;
 import com.newcitysoft.study.netty.work.entity.Message;
+import com.newcitysoft.study.netty.work.entity.MessageType;
 import com.newcitysoft.study.netty.work.entity.PacketType;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
@@ -49,19 +50,20 @@ public class TimeServerHandler extends ChannelHandlerAdapter {
                 result = new Date(System.currentTimeMillis()).toString();
             }else {
                 try {
-                    Message<String> packet = JSONObject.parseObject(request, Message.class);
-                    PacketType packetType = packet.getType();
-                    switch (packetType) {
-                        case SYNCGET:
+                    Message packet = JSONObject.parseObject(request, Message.class);
+                    MessageType messageType = MessageType.fromTypeName(packet.getHeader().getType());
+
+                    switch (messageType) {
+                        case SYNC_GET:
                             break;
-                        case ASYNCGET:
+                        case ASYNC_GET:
                             break;
                         case REPORT:
                             break;
                         default:
                             break;
                     }
-                    result = packet.getType().toString();
+                    result = packet.getHeader().getType() + "";
                 } catch (Exception e) {
                     result = "Bad order!";
                 }

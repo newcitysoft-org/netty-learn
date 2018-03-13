@@ -90,15 +90,15 @@ public class ServerHandler extends Thread{
     public static Message handle(Message packet) {
         System.out.println(MessageType.fromTypeName(packet.getHeader().getType()));
         Message resp = checkPacket(packet);
-        if(resp.getBody().getResult() == Result.RESULT_FAILURE) {
+        if(((Result)resp.getBody()).getResult() == Result.RESULT_FAILURE) {
             return resp;
         }else {
             Message result = new Message();
-            switch (packet.getType()) {
-                case SYNCGET:
+            switch (MessageType.fromTypeName(packet.getHeader().getType())) {
+                case SYNC_GET:
                     result = handleSyncGet(packet);
                     break;
-                case ASYNCGET:
+                case ASYNC_GET:
                     result = handleAsyncGet(packet);
                     break;
                 case REPORT:
@@ -147,7 +147,9 @@ public class ServerHandler extends Thread{
 
         }catch (Exception e) {
             e.printStackTrace();
-            resp.setType(PacketType.RESPONSE);
+            header.setType(MessageType.RESPONSE.value());
+
+            resp.setHeader(header);
             resp.setBody(packagingErrorPacket(Result.Code.ERROR_ENCODE, "数据封装错误！"));
         }
 

@@ -1,9 +1,7 @@
 package com.newcitysoft.study.netty.scene.socket.netty;
 
 import com.alibaba.fastjson.JSONObject;
-import com.newcitysoft.study.netty.work.entity.Message;
-import com.newcitysoft.study.netty.work.entity.PacketType;
-import com.newcitysoft.study.netty.work.entity.Task;
+import com.newcitysoft.study.netty.work.entity.*;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerAdapter;
@@ -27,7 +25,11 @@ public class TimeClientHandler extends ChannelHandlerAdapter {
         Message packet = new Message();
         Task task = new Task("crawl", 10);
 
-        packet.setType(PacketType.SYNCGET);
+        Header header = new Header();
+
+        header.setType(MessageType.SYNC_GET.value());
+
+        packet.setHeader(header);
         packet.setBody(task);
 
         req = (JSONObject.toJSONString(packet)+"$_").getBytes();
