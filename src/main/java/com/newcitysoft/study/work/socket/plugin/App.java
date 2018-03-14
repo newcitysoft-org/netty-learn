@@ -40,6 +40,8 @@ public class App {
             }
         });
 
+        System.out.println("aaa");
+
 //        while (true) {
 //            Thread.sleep(5000);
 //            String tasks = client.getTasks("md5");
