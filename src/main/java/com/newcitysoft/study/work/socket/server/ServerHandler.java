@@ -6,6 +6,7 @@ import com.newcitysoft.study.work.entity.Message;
 import com.newcitysoft.study.work.entity.MessageType;
 import com.newcitysoft.study.work.entity.Result;
 import com.newcitysoft.study.work.entity.TaskItem;
+import com.sun.corba.se.spi.ior.ObjectKey;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -118,6 +119,7 @@ public final class ServerHandler extends Thread{
         return Integer.toHexString(random.nextInt());
     }
 
+    @Deprecated
     public static Object getTasks(String type) {
         if("md5".equals(type)) {
             List<TaskItem> list = new ArrayList<TaskItem>();
@@ -177,12 +179,36 @@ public final class ServerHandler extends Thread{
     }
 
     /**
+     * 模拟异步发送任务情况
+     * @return
+     */
+    @Deprecated
+    private static Object getAsyncTask() {
+        try {
+            Thread.sleep(1000*60*2);
+            return getTasks("md5");
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
      * 处理异步获取
      * @param packet
      * @return
      */
     private static Message handleAsyncGet(Message packet){
         Message resp = new Message();
+        Header header = new Header();
+
+        Object body = packet.getBody();
+
+        if(body != null) {
+            header.setType(MessageType.SYNC_GET.value());
+            resp.setHeader(header);
+            resp.setBody(getAsyncTask());
+        }
         return resp;
     }
 

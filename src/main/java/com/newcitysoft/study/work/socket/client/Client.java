@@ -1,6 +1,7 @@
 package com.newcitysoft.study.work.socket.client;
 
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.newcitysoft.study.work.entity.Header;
 import com.newcitysoft.study.work.entity.Message;
@@ -82,8 +83,8 @@ public final class Client {
         return message;
     }
 
-    private String parseGetTaskMessage(String taskType) {
-        Header header = parseHeader(MessageType.SYNC_GET, null);
+    private String parseGetTaskMessage(MessageType type, String taskType) {
+        Header header = parseHeader(type, null);
         Message taskMessage = new Message();
 
         taskMessage.setHeader(header);
@@ -93,13 +94,15 @@ public final class Client {
     }
 
     /**
-     * 获取任务
+     * 同步获取任务
+     * @param taskType
+     * @return
      */
     public String getTasks(String taskType) {
         checkNet();
         try {
             if(is != null && out != null) {
-                out.println(parseGetTaskMessage(taskType));
+                out.println(parseGetTaskMessage(MessageType.SYNC_GET, taskType));
                 out.flush();
 
                 BufferedReader reader = new BufferedReader(new InputStreamReader(is));
@@ -147,6 +150,48 @@ public final class Client {
                     report(body);
                 }
             }
+        }
+    }
+
+    /**
+     * 异步获取任务
+     * @param taskType
+     * @param executor
+     */
+    public void asyncGetTasks(String taskType, TaskAsyncExecutor executor) {
+        if(executor == null) {
+            throw new IllegalArgumentException("TaskAsyncExecutor is null!");
+        }
+        try {
+            checkNet();
+            if(is != null && out != null) {
+                out.println(parseGetTaskMessage(MessageType.ASYNC_GET, taskType));
+                out.flush();
+
+                boolean isGet = false;
+                while(!isGet) {
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+                    String resp = null;
+                    resp = reader.readLine();
+
+                    Message message = JSONObject.parseObject(resp, Message.class);
+                    Object body = message.getBody();
+                    String tasks = null;
+                    if(body != null) {
+                        if(body instanceof String) {
+                            tasks = (String) body;
+                        } else {
+                            tasks = JSONObject.toJSONString(body);
+                        }
+                    }
+
+                    executor.execute(tasks);
+
+                    isGet = true;
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
