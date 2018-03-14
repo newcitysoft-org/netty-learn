@@ -1,4 +1,4 @@
-package com.newcitysoft.study.work.socket.plugin;
+package com.newcitysoft.study.work.util;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;

@@ -1,7 +1,6 @@
 package com.newcitysoft.study.netty.protocol;
 
 import io.netty.buffer.ByteBuf;
-import org.jboss.marshalling.ByteOutput;
 import org.jboss.marshalling.Marshaller;
 
 import java.io.IOException;

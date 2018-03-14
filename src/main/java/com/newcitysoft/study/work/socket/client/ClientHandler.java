@@ -7,7 +7,7 @@ import com.newcitysoft.study.work.entity.Message;
 import com.newcitysoft.study.work.entity.MessageType;
 import com.newcitysoft.study.work.entity.TaskItem;
 import com.newcitysoft.study.work.entity.TaskResult;
-import com.newcitysoft.study.work.socket.plugin.MD5Utils;
+import com.newcitysoft.study.work.util.MD5Utils;
 
 import java.util.List;
 import java.util.concurrent.ExecutorService;
