@@ -4,6 +4,7 @@ package com.newcitysoft.study.netty.work.entity;
  * @author lixin.tian@renren-inc.com
  * @date 2018/3/12 13:50
  */
+@Deprecated
 public class TaskResult<T> {
     private String taskId;
     private T result;

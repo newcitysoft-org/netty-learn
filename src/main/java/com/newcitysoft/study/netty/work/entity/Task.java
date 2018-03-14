@@ -4,6 +4,7 @@ package com.newcitysoft.study.netty.work.entity;
  * @author lixin.tian@renren-inc.com
  * @date 2018/3/9 11:52
  */
+@Deprecated
 public class Task {
     private String type;
     private int count;

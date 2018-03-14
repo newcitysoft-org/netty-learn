@@ -1,11 +1,10 @@
 package com.newcitysoft.test.netty;
 
 import com.newcitysoft.study.netty.scene.socket.Const;
-import com.newcitysoft.study.netty.work.client.Plugin;
+import com.newcitysoft.study.netty.work.client.Client;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
 /**
  * @author lixin.tian@renren-inc.com
@@ -23,6 +22,6 @@ public class Client2 {
 //            }
 //        }, 3, TimeUnit.SECONDS);
 
-        Plugin.report(Plugin.connect("127.0.0.1", port));
+        Client.report(Client.connect("127.0.0.1", port));
     }
 }

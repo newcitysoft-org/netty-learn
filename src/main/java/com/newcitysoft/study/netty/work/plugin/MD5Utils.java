@@ -1,4 +1,4 @@
-package com.newcitysoft.study.netty.work.client;
+package com.newcitysoft.study.netty.work.plugin;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;

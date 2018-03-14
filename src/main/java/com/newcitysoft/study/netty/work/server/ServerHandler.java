@@ -4,9 +4,8 @@ import com.alibaba.fastjson.JSONObject;
 import com.newcitysoft.study.netty.work.entity.Header;
 import com.newcitysoft.study.netty.work.entity.Message;
 import com.newcitysoft.study.netty.work.entity.MessageType;
-import com.newcitysoft.study.netty.work.entity.PacketType;
 import com.newcitysoft.study.netty.work.entity.Result;
-import com.newcitysoft.study.netty.work.entity.SendItem;
+import com.newcitysoft.study.netty.work.entity.TaskItem;
 import com.newcitysoft.study.netty.work.entity.Task;
 
 import java.io.BufferedReader;
@@ -129,16 +128,13 @@ public class ServerHandler extends Thread{
         Message resp = new Message();
         Header header = new Header();
         try{
-            String body = JSONObject.toJSONString(packet.getBody());
-            Task req = JSONObject.parseObject(body, Task.class);
+            String body = (String) packet.getBody();
 
-            List<SendItem> list = new ArrayList<SendItem>();
-            list.add(new SendItem(getTaskId(), "15841694657", System.currentTimeMillis()));
-            list.add(new SendItem(getTaskId(), "18840114833", System.currentTimeMillis()));
-            list.add(new SendItem(getTaskId(), "15040124451", System.currentTimeMillis()));
-            list.add(new SendItem(getTaskId(), "15566543218", System.currentTimeMillis()));
-
-
+            List<TaskItem> list = new ArrayList<TaskItem>();
+            list.add(new TaskItem(getTaskId(), "15841694657", System.currentTimeMillis()));
+            list.add(new TaskItem(getTaskId(), "18840114833", System.currentTimeMillis()));
+            list.add(new TaskItem(getTaskId(), "15040124451", System.currentTimeMillis()));
+            list.add(new TaskItem(getTaskId(), "15566543218", System.currentTimeMillis()));
 
             header.setType(MessageType.SEND.value());
 
@@ -156,12 +152,12 @@ public class ServerHandler extends Thread{
         return resp;
     }
 
-    private static List<SendItem> list = new ArrayList<SendItem>();
+    private static List<TaskItem> list = new ArrayList<TaskItem>();
     static {
-        list.add(new SendItem(getTaskId(), "15841694657", System.currentTimeMillis()));
-        list.add(new SendItem(getTaskId(), "18840114833", System.currentTimeMillis()));
-        list.add(new SendItem(getTaskId(), "15040124451", System.currentTimeMillis()));
-        list.add(new SendItem(getTaskId(), "15566543218", System.currentTimeMillis()));
+        list.add(new TaskItem(getTaskId(), "15841694657", System.currentTimeMillis()));
+        list.add(new TaskItem(getTaskId(), "18840114833", System.currentTimeMillis()));
+        list.add(new TaskItem(getTaskId(), "15040124451", System.currentTimeMillis()));
+        list.add(new TaskItem(getTaskId(), "15566543218", System.currentTimeMillis()));
     }
     /**
      * 处理异步获取

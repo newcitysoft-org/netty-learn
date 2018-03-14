@@ -4,15 +4,16 @@ package com.newcitysoft.study.netty.work.entity;
  * @author lixin.tian@renren-inc.com
  * @date 2018/3/12 10:52
  */
-public class SendItem {
+@Deprecated
+public class TaskItem {
     private String taskId;
     private String content;
     private long timestamp;
 
-    public SendItem() {
+    public TaskItem() {
     }
 
-    public SendItem(String taskId, String content, Long timestamp) {
+    public TaskItem(String taskId, String content, Long timestamp) {
         this.taskId = taskId;
         this.content = content;
         this.timestamp = timestamp;

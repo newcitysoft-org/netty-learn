@@ -4,6 +4,7 @@ package com.newcitysoft.study.netty.work.entity;
  * 包类型枚举类
  * @author lixin.tian@renren-inc.com
  */
+@Deprecated
 public enum PacketType {
     /**
      * 同步获取

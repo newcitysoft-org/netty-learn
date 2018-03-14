@@ -1,7 +1,7 @@
 package com.newcitysoft.test.netty;
 
 import com.newcitysoft.study.netty.scene.socket.Const;
-import com.newcitysoft.study.netty.work.client.Plugin;
+import com.newcitysoft.study.netty.work.client.Client;
 
 /**
  * @author lixin.tian@renren-inc.com
@@ -15,10 +15,10 @@ public class Client1 {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                Plugin.report(Plugin.connect(host, port));
+                Client.report(Client.connect(host, port));
             }
         }).start();
 
-        Plugin.communicate(Plugin.connect(host, port));
+        Client.communicate(Client.connect(host, port));
     }
 }

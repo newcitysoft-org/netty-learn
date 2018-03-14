@@ -3,6 +3,7 @@ package com.newcitysoft.study.netty.work.client;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.newcitysoft.study.netty.work.entity.*;
+import com.newcitysoft.study.netty.work.plugin.MD5Utils;
 
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -36,9 +37,9 @@ public class ClientHandler {
             System.out.println(resp);
             Message packet = JSONObject.parseObject(resp, Message.class);
 
-            List<SendItem> list = JSONArray.parseArray(JSONObject.toJSONString(packet.getBody()), SendItem.class);
+            List<TaskItem> list = JSONArray.parseArray(JSONObject.toJSONString(packet.getBody()), TaskItem.class);
             System.out.println(list.size());
-            for (SendItem item : list) {
+            for (TaskItem item : list) {
                 executor.execute(new TaskExecutor(item));
             }
 
@@ -66,9 +67,9 @@ public class ClientHandler {
      * 任务执行器
      */
     private static class TaskExecutor implements Runnable {
-        private SendItem item;
+        private TaskItem item;
 
-        public TaskExecutor(SendItem item) {
+        public TaskExecutor(TaskItem item) {
             this.item = item;
         }
 

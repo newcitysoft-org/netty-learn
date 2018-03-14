@@ -12,6 +12,7 @@ import java.util.Map;
  * @author lixin.tian@renren-inc.com
  * @date 2018/3/12 16:21
  */
+@Deprecated
 public class TaskResultCache {
     private volatile static Map<String, List<TaskResult>> resultMap = new HashMap<>();
     private static Object lock = new Object();
