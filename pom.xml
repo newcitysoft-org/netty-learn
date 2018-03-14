@@ -8,6 +8,10 @@
     <name>netty-learn Maven Webapp</name>
     <url>http://maven.apache.org</url>
     <properties>
+        <junit.version>4.11</junit.version>
+        <netty.version>4.1.12.Final</netty.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <main.class>com.corundumstudio.socketio.demo.ChatLauncher</main.class>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
