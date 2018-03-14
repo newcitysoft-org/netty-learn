@@ -1,7 +1,7 @@
 package com.newcitysoft.test.netty;
 
 import com.newcitysoft.study.netty.scene.socket.Const;
-import com.newcitysoft.study.netty.work.client.Client;
+import com.newcitysoft.study.netty.work.socket.client.Client;
 
 /**
  * @author lixin.tian@renren-inc.com

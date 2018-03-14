@@ -1,4 +1,4 @@
-package com.newcitysoft.study.netty.work.client;
+package com.newcitysoft.study.netty.work.socket.client;
 
 import com.alibaba.fastjson.JSONObject;
 import com.newcitysoft.study.netty.work.entity.TaskResult;

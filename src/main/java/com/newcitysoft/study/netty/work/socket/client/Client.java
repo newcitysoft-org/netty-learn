@@ -1,8 +1,7 @@
-package com.newcitysoft.study.netty.work.client;
+package com.newcitysoft.study.netty.work.socket.client;
 
 
 import com.alibaba.fastjson.JSONObject;
-import com.newcitysoft.study.netty.scene.socket.Const;
 import com.newcitysoft.study.netty.work.entity.Header;
 import com.newcitysoft.study.netty.work.entity.Message;
 import com.newcitysoft.study.netty.work.entity.MessageType;
@@ -15,13 +14,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintWriter;
-import java.net.InetAddress;
 import java.net.Socket;
-import java.util.List;
 import java.util.Map;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
 /**
  * @author lixin.tian@renren-inc.com

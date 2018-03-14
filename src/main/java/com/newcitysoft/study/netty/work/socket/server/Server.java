@@ -1,7 +1,6 @@
-package com.newcitysoft.study.netty.work.server;
+package com.newcitysoft.study.netty.work.socket.server;
 
 import com.newcitysoft.study.netty.scene.socket.Const;
-import com.newcitysoft.study.netty.scene.socket.bio.TimeServerHandler;
 
 import java.io.IOException;
 import java.net.ServerSocket;

@@ -1,9 +1,8 @@
-package com.newcitysoft.study.netty.work.client;
+package com.newcitysoft.study.netty.work.socket.client;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.newcitysoft.study.netty.work.entity.*;
-import com.newcitysoft.study.netty.work.plugin.MD5Utils;
+import com.newcitysoft.study.netty.work.socket.plugin.MD5Utils;
 
 import java.util.List;
 import java.util.concurrent.ExecutorService;
