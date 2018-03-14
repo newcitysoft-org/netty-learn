@@ -1,7 +1,7 @@
-package com.newcitysoft.study.netty.work.socket.client;
+package com.newcitysoft.study.work.socket.client;
 
 import com.alibaba.fastjson.JSONObject;
-import com.newcitysoft.study.netty.work.entity.TaskResult;
+import com.newcitysoft.study.work.entity.TaskResult;
 
 import java.util.ArrayList;
 import java.util.HashMap;

@@ -1,7 +1,7 @@
 package com.newcitysoft.study.netty.scene.socket.netty;
 
 import com.alibaba.fastjson.JSONObject;
-import com.newcitysoft.study.netty.work.entity.*;
+import com.newcitysoft.study.work.entity.*;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerAdapter;

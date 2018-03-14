@@ -1,7 +1,7 @@
 package com.newcitysoft.test.netty;
 
 import com.newcitysoft.study.netty.scene.socket.Const;
-import com.newcitysoft.study.netty.work.socket.client.Client;
+import com.newcitysoft.study.work.socket.client.Client;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;

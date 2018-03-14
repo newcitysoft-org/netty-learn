@@ -1,4 +1,4 @@
-package com.newcitysoft.study.netty.work.socket.server;
+package com.newcitysoft.study.work.socket.server;
 
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ExecutorService;

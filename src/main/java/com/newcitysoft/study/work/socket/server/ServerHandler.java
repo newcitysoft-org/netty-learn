@@ -1,12 +1,12 @@
-package com.newcitysoft.study.netty.work.socket.server;
+package com.newcitysoft.study.work.socket.server;
 
 import com.alibaba.fastjson.JSONObject;
-import com.newcitysoft.study.netty.work.entity.Header;
-import com.newcitysoft.study.netty.work.entity.Message;
-import com.newcitysoft.study.netty.work.entity.MessageType;
-import com.newcitysoft.study.netty.work.entity.Result;
-import com.newcitysoft.study.netty.work.entity.Task;
-import com.newcitysoft.study.netty.work.entity.TaskItem;
+import com.newcitysoft.study.work.entity.Header;
+import com.newcitysoft.study.work.entity.Message;
+import com.newcitysoft.study.work.entity.MessageType;
+import com.newcitysoft.study.work.entity.Result;
+import com.newcitysoft.study.work.entity.Task;
+import com.newcitysoft.study.work.entity.TaskItem;
 
 import java.io.BufferedReader;
 import java.io.IOException;

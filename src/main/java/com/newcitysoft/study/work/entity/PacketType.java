@@ -1,4 +1,4 @@
-package com.newcitysoft.study.netty.work.entity;
+package com.newcitysoft.study.work.entity;
 
 /**
  * 包类型枚举类

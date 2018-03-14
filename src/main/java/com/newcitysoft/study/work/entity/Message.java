@@ -1,4 +1,4 @@
-package com.newcitysoft.study.netty.work.entity;
+package com.newcitysoft.study.work.entity;
 
 /**
  * Socket数据传输协议包

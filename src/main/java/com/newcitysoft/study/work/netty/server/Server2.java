@@ -1,4 +1,4 @@
-package com.newcitysoft.study.netty.work.netty.server;
+package com.newcitysoft.study.work.netty.server;
 
 import com.newcitysoft.study.netty.scene.socket.Const;
 import io.netty.bootstrap.ServerBootstrap;

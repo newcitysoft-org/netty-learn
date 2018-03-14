@@ -1,6 +1,6 @@
 package com.newcitysoft.test.netty;
 
-import com.newcitysoft.study.netty.work.socket.client.Client;
+import com.newcitysoft.study.work.socket.client.Client;
 
 /**
  * @author lixin.tian@renren-inc.com
