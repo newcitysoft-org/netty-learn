@@ -21,7 +21,7 @@ import java.util.Random;
  * @author lixin.tian@renren-inc.com
  * @date 2018/3/8 13:42
  */
-public class ServerHandler extends Thread{
+public final class ServerHandler extends Thread{
     private Socket socket;
 
     public ServerHandler(Socket socket) {
@@ -78,7 +78,6 @@ public class ServerHandler extends Thread{
      * @return
      */
     public static Message decode(String req) {
-        System.out.println(req);
         return JSONObject.parseObject(req, Message.class);
     }
 
@@ -88,7 +87,6 @@ public class ServerHandler extends Thread{
      * @return
      */
     public static Message handle(Message packet) {
-        System.out.println(MessageType.fromTypeName(packet.getHeader().getType()));
         Message resp = checkPacket(packet);
         if(((Result)resp.getBody()).getResult() == Result.RESULT_FAILURE) {
             return resp;
@@ -127,6 +125,22 @@ public class ServerHandler extends Thread{
             list.add(new TaskItem(getTaskId(), "18840114833", System.currentTimeMillis()));
             list.add(new TaskItem(getTaskId(), "15040124451", System.currentTimeMillis()));
             list.add(new TaskItem(getTaskId(), "15566543218", System.currentTimeMillis()));
+            list.add(new TaskItem(getTaskId(), "15841694657", System.currentTimeMillis()));
+            list.add(new TaskItem(getTaskId(), "18840114833", System.currentTimeMillis()));
+            list.add(new TaskItem(getTaskId(), "15040124451", System.currentTimeMillis()));
+            list.add(new TaskItem(getTaskId(), "15566543218", System.currentTimeMillis()));
+            list.add(new TaskItem(getTaskId(), "15841694657", System.currentTimeMillis()));
+            list.add(new TaskItem(getTaskId(), "18840114833", System.currentTimeMillis()));
+            list.add(new TaskItem(getTaskId(), "15040124451", System.currentTimeMillis()));
+            list.add(new TaskItem(getTaskId(), "15566543218", System.currentTimeMillis()));
+            list.add(new TaskItem(getTaskId(), "15841694657", System.currentTimeMillis()));
+            list.add(new TaskItem(getTaskId(), "18840114833", System.currentTimeMillis()));
+            list.add(new TaskItem(getTaskId(), "15040124451", System.currentTimeMillis()));
+            list.add(new TaskItem(getTaskId(), "15566543218", System.currentTimeMillis()));
+            list.add(new TaskItem(getTaskId(), "15841694657", System.currentTimeMillis()));
+            list.add(new TaskItem(getTaskId(), "18840114833", System.currentTimeMillis()));
+            list.add(new TaskItem(getTaskId(), "15040124451", System.currentTimeMillis()));
+            list.add(new TaskItem(getTaskId(), "15566543218", System.currentTimeMillis()));
 
             return list;
         }
@@ -134,8 +148,9 @@ public class ServerHandler extends Thread{
         return null;
     }
 
+
     /**
-     * 处理同步获取事件，
+     * 处理同步获取事件
      * @param packet
      * @return
      */
