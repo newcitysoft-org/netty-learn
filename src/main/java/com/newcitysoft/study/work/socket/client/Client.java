@@ -1,7 +1,6 @@
 package com.newcitysoft.study.work.socket.client;
 
 
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.newcitysoft.study.work.entity.Header;
 import com.newcitysoft.study.work.entity.Message;

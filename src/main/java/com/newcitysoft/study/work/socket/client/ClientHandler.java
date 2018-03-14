@@ -17,6 +17,7 @@ import java.util.concurrent.Executors;
  * @author lixin.tian@renren-inc.com
  * @date 2018/3/12 14:47
  */
+@Deprecated
 public class ClientHandler {
 
     public static final String TASK_TYPE = "md5";
