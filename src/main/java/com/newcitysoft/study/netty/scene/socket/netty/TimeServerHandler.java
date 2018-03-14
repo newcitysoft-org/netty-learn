@@ -3,7 +3,6 @@ package com.newcitysoft.study.netty.scene.socket.netty;
 import com.alibaba.fastjson.JSONObject;
 import com.newcitysoft.study.work.entity.Message;
 import com.newcitysoft.study.work.entity.MessageType;
-import com.newcitysoft.study.work.entity.PacketType;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerAdapter;

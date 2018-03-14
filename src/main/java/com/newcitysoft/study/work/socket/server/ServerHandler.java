@@ -5,7 +5,6 @@ import com.newcitysoft.study.work.entity.Header;
 import com.newcitysoft.study.work.entity.Message;
 import com.newcitysoft.study.work.entity.MessageType;
 import com.newcitysoft.study.work.entity.Result;
-import com.newcitysoft.study.work.entity.Task;
 import com.newcitysoft.study.work.entity.TaskItem;
 
 import java.io.BufferedReader;
@@ -237,13 +236,12 @@ public class ServerHandler extends Thread{
 
     public static void main(String[] args) {
         Message dataPacket = new Message();
-        Task task = new Task("md5", 20);
         Header header = new Header();
 
         header.setType(MessageType.SYNC_GET.value());
 
         dataPacket.setHeader(header);
-        dataPacket.setBody(task);
+        dataPacket.setBody("md5");
 
         System.out.println(JSONObject.toJSONString(dataPacket));
         System.out.println(JSONObject.toJSONString(handle(dataPacket)));

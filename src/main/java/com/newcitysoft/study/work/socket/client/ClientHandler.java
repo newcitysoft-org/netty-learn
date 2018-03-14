@@ -5,7 +5,6 @@ import com.alibaba.fastjson.JSONObject;
 import com.newcitysoft.study.work.entity.Header;
 import com.newcitysoft.study.work.entity.Message;
 import com.newcitysoft.study.work.entity.MessageType;
-import com.newcitysoft.study.work.entity.Task;
 import com.newcitysoft.study.work.entity.TaskItem;
 import com.newcitysoft.study.work.entity.TaskResult;
 import com.newcitysoft.study.work.socket.plugin.MD5Utils;
@@ -22,14 +21,13 @@ public class ClientHandler {
 
     public static final String TASK_TYPE = "md5";
     private static Message packet = new Message();
-    private static Task task = new Task("md5", 20);
     static {
         Header header = new Header();
 
         header.setType(MessageType.SYNC_GET.value());
 
         packet.setHeader(header);
-        packet.setBody(task);
+        packet.setBody(TASK_TYPE);
     }
 
     public static String getTask() {
@@ -85,7 +83,7 @@ public class ClientHandler {
             result.setTaskId(item.getTaskId());
             result.setGetTime(item.getTimestamp());
             result.setReportTime(System.currentTimeMillis());
-            result.setResult(MD5Utils.md5(item.getContent()));
+            result.setResult(MD5Utils.md5((String) item.getContent()));
 
             TaskResultCache.put(TASK_TYPE, result);
         }

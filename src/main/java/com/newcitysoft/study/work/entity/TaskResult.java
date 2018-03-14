@@ -4,10 +4,9 @@ package com.newcitysoft.study.work.entity;
  * @author lixin.tian@renren-inc.com
  * @date 2018/3/12 13:50
  */
-@Deprecated
-public class TaskResult<T> {
+public class TaskResult {
     private String taskId;
-    private T result;
+    private Object result;
     private long getTime;
     private long reportTime;
 
@@ -19,11 +18,11 @@ public class TaskResult<T> {
         this.taskId = taskId;
     }
 
-    public T getResult() {
+    public Object getResult() {
         return result;
     }
 
-    public void setResult(T result) {
+    public void setResult(Object result) {
         this.result = result;
     }
 
@@ -43,7 +42,7 @@ public class TaskResult<T> {
         this.reportTime = reportTime;
     }
 
-    public TaskResult(String taskId, T result, long getTime, long reportTime) {
+    public TaskResult(String taskId, Object result, long getTime, long reportTime) {
         this.taskId = taskId;
         this.result = result;
         this.getTime = getTime;

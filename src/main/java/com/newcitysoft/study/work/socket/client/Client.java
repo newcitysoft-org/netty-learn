@@ -1,6 +1,7 @@
 package com.newcitysoft.study.work.socket.client;
 
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.newcitysoft.study.work.entity.Header;
 import com.newcitysoft.study.work.entity.Message;
@@ -18,7 +19,7 @@ import java.util.Map;
  * @author lixin.tian@renren-inc.com
  * @date 2018/3/8 13:52
  */
-public class Client {
+public final class Client {
     private Socket socket = null;
     private InputStream is = null;
     private PrintWriter out = null;
@@ -92,7 +93,6 @@ public class Client {
         return JSONObject.toJSONString(taskMessage);
     }
 
-
     /**
      * 获取任务
      */
@@ -108,11 +108,12 @@ public class Client {
                 Message message = JSONObject.parseObject(resp, Message.class);
 
                 Object body = message.getBody();
-
-                if(body instanceof  String) {
-                    return (String) body;
-                } else {
-                    return JSONObject.toJSONString(body);
+                if(body != null) {
+                    if(body instanceof String) {
+                        return (String) body;
+                    } else {
+                        return JSONObject.toJSONString(body);
+                    }
                 }
             }
         } catch (IOException e) {
@@ -129,7 +130,7 @@ public class Client {
     }
 
     /**
-     * 上报
+     * 上报任务结果
      * @param body
      */
     public void report(Object body) {
@@ -139,7 +140,7 @@ public class Client {
             Message message = parseMessage(header, body);
 
             try {
-                out.println(JSONObject.toJSONString(message).getBytes());
+                out.println(JSONObject.toJSONString(message));
             }  finally {
                 try {
                     close();
@@ -150,7 +151,10 @@ public class Client {
         }
     }
 
-
+    /**
+     * 关闭资源
+     * @throws IOException
+     */
     private void close() throws IOException {
         if(out != null) {
             out.close();
@@ -168,86 +172,25 @@ public class Client {
         }
     }
 
-
-//    public void writeAndFlush(PrintWriter out, String content) {
-//        out.println(content);
-//        out.flush();
-//    }
-
-
-    public static void close(BufferedReader in, PrintWriter out, Socket socket) {
-        if(out != null) {
-            out.close();
-        }
-
-        if(in != null) {
-            try {
-                in.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-        if(socket != null) {
-            try {
-                socket.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-//    public static void communicate(Socket socket) {
-//        BufferedReader in = null;
-//        PrintWriter out = null;
-//        try {
-//            in =  new BufferedReader(new InputStreamReader(socket.getInputStream()));
-//            out = new PrintWriter(socket.getOutputStream());
+    //    private Object parseMessageBody(Object body, Class<?> clazz) {
+//        if(clazz == null) {
+//            clazz = String.class;
+//        }
 //
-//            while (true) {
-//                Thread.sleep(3000);
-//                try {
-//                    writeAndFlush(out, ClientHandler.getTask());
-//                    ClientHandler.handle(read(in));
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        } finally {
-//            close(in, out, socket);
+//        if(body instanceof String) {
+//            JSONObject.parseObject((String) body, clazz);
+//        } else if(body instanceof JSONArray) {
+//            return JSONObject.toJSONString(body);
+//        } else if(body instanceof JSONObject) {
+//
 //        }
-//    }
-
-//    public static void report(Socket socket) {
-//        BufferedReader in = null;
-//        PrintWriter out = null;
-//        try {
-//            in =  new BufferedReader(new InputStreamReader(socket.getInputStream()));
-//            out = new PrintWriter(socket.getOutputStream());
-//            while (true) {
-//                Thread.sleep(3000);
-//                List<TaskResult> taskResults = TaskResultCache.get(ClientHandler.TASK_TYPE);
-//                if(taskResults != null && taskResults.size() > 0) {
-//                    String packet = ClientHandler.report(taskResults);
-//                    writeAndFlush(out, packet);
-//                }
-//            }
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        } finally {
-//            close(in, out, socket);
-//        }
+//
+//        return null;
 //    }
 
     public static void main(String[] args) {
         Client client = getInstance();
-        String tasks = client.getTasks("md5");
+        String tasks = (String) client.getTasks("md5");
         System.out.println(tasks);
     }
 }

@@ -4,10 +4,9 @@ package com.newcitysoft.study.work.entity;
  * @author lixin.tian@renren-inc.com
  * @date 2018/3/12 10:52
  */
-@Deprecated
 public class TaskItem {
     private String taskId;
-    private String content;
+    private Object content;
     private long timestamp;
 
     public TaskItem() {
@@ -27,11 +26,11 @@ public class TaskItem {
         this.taskId = taskId;
     }
 
-    public String getContent() {
+    public Object getContent() {
         return content;
     }
 
-    public void setContent(String content) {
+    public void setContent(Object content) {
         this.content = content;
     }
 
