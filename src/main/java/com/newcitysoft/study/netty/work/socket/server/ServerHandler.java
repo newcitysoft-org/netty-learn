@@ -41,6 +41,7 @@ public class ServerHandler extends Thread{
 
             while (true) {
                 body = in.readLine();
+                System.out.println(body);
                 if(body == null) {
                     break;
                 }
@@ -78,6 +79,7 @@ public class ServerHandler extends Thread{
      * @return
      */
     public static Message decode(String req) {
+        System.out.println(req);
         return JSONObject.parseObject(req, Message.class);
     }
 
@@ -119,6 +121,20 @@ public class ServerHandler extends Thread{
         return Integer.toHexString(random.nextInt());
     }
 
+    public static Object getTasks(String type) {
+        if("md5".equals(type)) {
+            List<TaskItem> list = new ArrayList<TaskItem>();
+            list.add(new TaskItem(getTaskId(), "15841694657", System.currentTimeMillis()));
+            list.add(new TaskItem(getTaskId(), "18840114833", System.currentTimeMillis()));
+            list.add(new TaskItem(getTaskId(), "15040124451", System.currentTimeMillis()));
+            list.add(new TaskItem(getTaskId(), "15566543218", System.currentTimeMillis()));
+
+            return list;
+        }
+
+        return null;
+    }
+
     /**
      * 处理同步获取事件，
      * @param packet
@@ -129,18 +145,12 @@ public class ServerHandler extends Thread{
         Header header = new Header();
         try{
             String body = (String) packet.getBody();
+            if(body != null) {
+                header.setType(MessageType.SEND.value());
 
-            List<TaskItem> list = new ArrayList<TaskItem>();
-            list.add(new TaskItem(getTaskId(), "15841694657", System.currentTimeMillis()));
-            list.add(new TaskItem(getTaskId(), "18840114833", System.currentTimeMillis()));
-            list.add(new TaskItem(getTaskId(), "15040124451", System.currentTimeMillis()));
-            list.add(new TaskItem(getTaskId(), "15566543218", System.currentTimeMillis()));
-
-            header.setType(MessageType.SEND.value());
-
-            resp.setHeader(header);
-            resp.setBody(list);
-
+                resp.setHeader(header);
+                resp.setBody(getTasks(body));
+            }
         }catch (Exception e) {
             e.printStackTrace();
             header.setType(MessageType.RESPONSE.value());
@@ -152,13 +162,6 @@ public class ServerHandler extends Thread{
         return resp;
     }
 
-    private static List<TaskItem> list = new ArrayList<TaskItem>();
-    static {
-        list.add(new TaskItem(getTaskId(), "15841694657", System.currentTimeMillis()));
-        list.add(new TaskItem(getTaskId(), "18840114833", System.currentTimeMillis()));
-        list.add(new TaskItem(getTaskId(), "15040124451", System.currentTimeMillis()));
-        list.add(new TaskItem(getTaskId(), "15566543218", System.currentTimeMillis()));
-    }
     /**
      * 处理异步获取
      * @param packet

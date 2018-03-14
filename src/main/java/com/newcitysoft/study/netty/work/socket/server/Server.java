@@ -30,15 +30,6 @@ public class Server {
     }
 
     public static void main(String[] args) throws IOException {
-        int port = Const.BIO_PORT;
-        if(args!=null && args.length>0) {
-            try {
-                port = Integer.parseInt(args[0]);
-            }catch (Exception e) {
-
-            }
-        }
-
-        listen(port);
+        listen(9090);
     }
 }

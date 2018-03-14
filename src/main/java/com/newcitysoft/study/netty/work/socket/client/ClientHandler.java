@@ -2,6 +2,12 @@ package com.newcitysoft.study.netty.work.socket.client;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.newcitysoft.study.netty.work.entity.Header;
+import com.newcitysoft.study.netty.work.entity.Message;
+import com.newcitysoft.study.netty.work.entity.MessageType;
+import com.newcitysoft.study.netty.work.entity.Task;
+import com.newcitysoft.study.netty.work.entity.TaskItem;
+import com.newcitysoft.study.netty.work.entity.TaskResult;
 import com.newcitysoft.study.netty.work.socket.plugin.MD5Utils;
 
 import java.util.List;

@@ -5,14 +5,11 @@ import com.alibaba.fastjson.JSONObject;
 import com.newcitysoft.study.netty.work.entity.Header;
 import com.newcitysoft.study.netty.work.entity.Message;
 import com.newcitysoft.study.netty.work.entity.MessageType;
-import com.newcitysoft.study.netty.work.entity.Task;
-import com.newcitysoft.study.netty.work.entity.TaskResult;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Map;
@@ -24,7 +21,7 @@ import java.util.Map;
 public class Client {
     private Socket socket = null;
     private InputStream is = null;
-    private OutputStream os = null;
+    private PrintWriter out = null;
 
     private final static String host = "127.0.0.1";
     private final static int port = 9090;
@@ -40,7 +37,7 @@ public class Client {
         try {
             socket = new Socket(host, port);
             is = socket.getInputStream();
-            os = socket.getOutputStream();
+            out = new PrintWriter(socket.getOutputStream());
         } catch (IOException e) {
             connect();
         }
@@ -102,8 +99,9 @@ public class Client {
     public String getTasks(String taskType) {
         checkNet();
         try {
-            if(is != null && os != null) {
-                os.write(parseGetTaskMessage(taskType).getBytes());
+            if(is != null && out != null) {
+                out.println(parseGetTaskMessage(taskType));
+                out.flush();
 
                 BufferedReader reader = new BufferedReader(new InputStreamReader(is));
                 String resp = reader.readLine();
@@ -136,15 +134,13 @@ public class Client {
      */
     public void report(Object body) {
         checkNet();
-        if(is != null && os != null) {
+        if(is != null && out != null) {
             Header header = parseHeader(MessageType.REPORT, null);
             Message message = parseMessage(header, body);
 
             try {
-                os.write(JSONObject.toJSONString(message).getBytes());
-            } catch (IOException e) {
-                report(body);
-            } finally {
+                out.println(JSONObject.toJSONString(message).getBytes());
+            }  finally {
                 try {
                     close();
                 } catch (IOException e1) {
@@ -156,9 +152,9 @@ public class Client {
 
 
     private void close() throws IOException {
-        if(os != null) {
-            os.close();
-            os = null;
+        if(out != null) {
+            out.close();
+            out = null;
         }
 
         if(is != null) {
@@ -251,7 +247,7 @@ public class Client {
 
     public static void main(String[] args) {
         Client client = getInstance();
-        String tasks = client.getTasks("crawl");
+        String tasks = client.getTasks("md5");
         System.out.println(tasks);
     }
 }

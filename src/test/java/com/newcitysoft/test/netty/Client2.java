@@ -22,6 +22,6 @@ public class Client2 {
 //            }
 //        }, 3, TimeUnit.SECONDS);
 
-        Client.report(Client.connect("127.0.0.1", port));
+        //Client.report(Client.connect("127.0.0.1", port));
     }
 }

@@ -1,6 +1,5 @@
 package com.newcitysoft.test.netty;
 
-import com.newcitysoft.study.netty.scene.socket.Const;
 import com.newcitysoft.study.netty.work.socket.client.Client;
 
 /**
@@ -9,16 +8,10 @@ import com.newcitysoft.study.netty.work.socket.client.Client;
  */
 public class Client1 {
     public static void main(String[] args) {
-        final int port = Const.BIO_PORT;
-        final String host = "127.0.0.1";
+        Client client = Client.getInstance();
 
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                Client.report(Client.connect(host, port));
-            }
-        }).start();
+        String tasks = client.getTasks("md5");
 
-        Client.communicate(Client.connect(host, port));
+        System.out.println(tasks);
     }
 }
