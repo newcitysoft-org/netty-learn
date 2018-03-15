@@ -1,8 +1,9 @@
 package com.newcitysoft.study.work.netty.client;
 
-import com.newcitysoft.study.netty.scene.socket.Const;
 import io.netty.bootstrap.Bootstrap;
+import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
+import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
@@ -17,7 +18,9 @@ import io.netty.handler.codec.string.StringDecoder;
  */
 public class Client {
     private final static String host = "127.0.0.1";
-    private final static int port = 9090;
+    private final static int port = 9999;
+
+    private Channel channel = null;
 
     private static Client instance = new Client();
     private Client(){}
@@ -41,6 +44,16 @@ public class Client {
 
             // 发起异步连接操作
             ChannelFuture f = b.connect(host, port).sync();
+            f.addListener(new ChannelFutureListener() {
+                @Override
+                public void operationComplete(ChannelFuture channelFuture) throws Exception {
+                    if(channelFuture.isSuccess()) {
+                        channel = channelFuture.channel();
+                        System.out.println(channel);
+                        System.out.println("已连接服务端。。。。");
+                    }
+                }
+            });
             // 等待客户端链路关闭
             f.channel().closeFuture().sync();
         } catch (InterruptedException e) {
