@@ -15,7 +15,7 @@ import java.util.Date;
  * @author lixin.tian@renren-inc.com
  * @date 2018/3/9 11:16
  */
-public class TimeServerHandler extends ChannelHandlerAdapter {
+public class ServerHandler extends ChannelHandlerAdapter {
     private int counter;
 
     @Override

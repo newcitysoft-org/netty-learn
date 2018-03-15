@@ -15,7 +15,7 @@ import io.netty.handler.codec.string.StringDecoder;
  * @author lixin.tian@renren-inc.com
  * @date 2018/3/9 11:06
  */
-public class TimeServer {
+public class Server {
 
     public void bind(int port) {
         EventLoopGroup boosGroup = new NioEventLoopGroup();
@@ -42,11 +42,11 @@ public class TimeServer {
         @Override
         protected void initChannel(SocketChannel socketChannel) throws Exception {
             socketChannel.pipeline().addLast(new StringDecoder());
-            socketChannel.pipeline().addLast(new TimeServerHandler());
+            socketChannel.pipeline().addLast(new ServerHandler());
         }
     }
 
     public static void main(String[] args) {
-        new TimeServer().bind(Const.NETTY_PORT);
+        new Server().bind(Const.NETTY_PORT);
     }
 }

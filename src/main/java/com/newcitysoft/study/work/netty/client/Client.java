@@ -16,8 +16,14 @@ import io.netty.handler.codec.string.StringDecoder;
  * @date 2018/3/9 11:29
  */
 public class Client {
+    private final static String host = "127.0.0.1";
+    private final static int port = 9090;
 
-    public void connect(String host, int port) {
+    private static Client instance = new Client();
+    private Client(){}
+    public static Client getInstance(){ return instance; }
+
+    public void connect() {
         // 配置客户端NIO线程组
         EventLoopGroup group = new NioEventLoopGroup();
         try {
@@ -43,7 +49,6 @@ public class Client {
     }
 
     public static void main(String[] args) {
-        int port = Const.NETTY_PORT;
-        new Client().connect("127.0.0.1", port);
+        instance.connect();
     }
 }
