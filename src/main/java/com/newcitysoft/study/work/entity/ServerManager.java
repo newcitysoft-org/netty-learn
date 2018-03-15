@@ -1,46 +1,16 @@
-package com.newcitysoft.study.work.netty.server;
+package com.newcitysoft.study.work.entity;
 
 import com.alibaba.fastjson.JSONObject;
-import com.newcitysoft.study.work.entity.Header;
-import com.newcitysoft.study.work.entity.Message;
-import com.newcitysoft.study.work.entity.MessageType;
-import com.newcitysoft.study.work.entity.Result;
-import com.newcitysoft.study.work.entity.TaskItem;
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
-import io.netty.channel.ChannelHandlerAdapter;
-import io.netty.channel.ChannelHandlerContext;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
 /**
  * @author lixin.tian@renren-inc.com
- * @date 2018/3/9 11:16
+ * @date 2018/3/15 14:08
  */
-public class ServerHandler extends ChannelHandlerAdapter {
-    @Override
-    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
-        ctx.close();
-    }
-
-    @Override
-    public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-        String body = (String) msg;
-        // 返回数据
-        String data = JSONObject.toJSONString(handle(decode(body)));
-        ByteBuf resp = Unpooled.copiedBuffer(data.getBytes());
-        ctx.writeAndFlush(resp);
-    }
-
-
-    @Override
-    public void channelReadComplete(ChannelHandlerContext ctx) throws Exception {
-        ctx.flush();
-    }
-
+public class ServerManager {
     /**
      * 解码
      * @param req
@@ -55,10 +25,10 @@ public class ServerHandler extends ChannelHandlerAdapter {
      * @param packet
      * @return
      */
-    public static Message handle(Message packet) {
+    public static String handle(Message packet) {
         Message resp = checkPacket(packet);
         if(((Result)resp.getBody()).getResult() == Result.RESULT_FAILURE) {
-            return resp;
+
         }else {
             Message result = new Message();
             switch (MessageType.fromTypeName(packet.getHeader().getType())) {
@@ -77,8 +47,10 @@ public class ServerHandler extends ChannelHandlerAdapter {
                 default:
                     break;
             }
-            return result;
+            resp =  result;
         }
+
+        return JSONObject.toJSONString(resp);
     }
 
     private static final Random random = new Random();
@@ -87,6 +59,7 @@ public class ServerHandler extends ChannelHandlerAdapter {
         return Integer.toHexString(random.nextInt());
     }
 
+    @Deprecated
     public static Object getTasks(String type) {
         if("md5".equals(type)) {
             List<TaskItem> list = new ArrayList<TaskItem>();
@@ -146,12 +119,36 @@ public class ServerHandler extends ChannelHandlerAdapter {
     }
 
     /**
+     * 模拟异步发送任务情况
+     * @return
+     */
+    @Deprecated
+    private static Object getAsyncTask() {
+        try {
+            Thread.sleep(1000*60*2);
+            return getTasks("md5");
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
      * 处理异步获取
      * @param packet
      * @return
      */
     private static Message handleAsyncGet(Message packet){
         Message resp = new Message();
+        Header header = new Header();
+
+        Object body = packet.getBody();
+
+        if(body != null) {
+            header.setType(MessageType.SYNC_GET.value());
+            resp.setHeader(header);
+            resp.setBody(getAsyncTask());
+        }
         return resp;
     }
 
@@ -206,6 +203,9 @@ public class ServerHandler extends ChannelHandlerAdapter {
         }else if(!MessageType.contains(packet.getHeader().getType())) {
             result = packagingErrorPacket(Result.Code.ERROR_EVENT, "没有该事件存在！");
         }
+//        else if(packet.getHeader().getType()) {
+//            result = packagingErrorPacket(Result.Code.ERROR_NULL_TYPE, "空类型!");
+//        }
         Header header = new Header();
 
         header.setType(MessageType.RESPONSE.value());
@@ -214,5 +214,4 @@ public class ServerHandler extends ChannelHandlerAdapter {
 
         return resp;
     }
-
 }

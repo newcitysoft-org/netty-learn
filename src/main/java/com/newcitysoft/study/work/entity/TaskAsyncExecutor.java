@@ -1,4 +1,4 @@
-package com.newcitysoft.study.work.socket.client;
+package com.newcitysoft.study.work.entity;
 
 /**
  * 任务异步执行器

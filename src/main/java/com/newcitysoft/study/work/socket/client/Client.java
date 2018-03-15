@@ -1,11 +1,12 @@
 package com.newcitysoft.study.work.socket.client;
 
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.newcitysoft.study.work.entity.ClientManger;
 import com.newcitysoft.study.work.entity.Header;
 import com.newcitysoft.study.work.entity.Message;
 import com.newcitysoft.study.work.entity.MessageType;
+import com.newcitysoft.study.work.entity.TaskAsyncExecutor;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -13,7 +14,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.util.Map;
 
 /**
  * @author lixin.tian@renren-inc.com
@@ -54,46 +54,6 @@ public final class Client {
     }
 
     /**
-     * 组装消息头
-     * @param type
-     * @param attachment
-     * @return
-     */
-    private Header parseHeader(MessageType type, Map<String, Object> attachment) {
-        Header header = new Header();
-
-        header.setType(type.value());
-        header.setAttachment(attachment);
-
-        return header;
-    }
-
-    /**
-     * 组装消息体
-     * @param header
-     * @param body
-     * @return
-     */
-    private Message parseMessage(Header header, Object body) {
-        Message message = new Message();
-
-        message.setHeader(header);
-        message.setBody(body);
-
-        return message;
-    }
-
-    private String parseGetTaskMessage(MessageType type, String taskType) {
-        Header header = parseHeader(type, null);
-        Message taskMessage = new Message();
-
-        taskMessage.setHeader(header);
-        taskMessage.setBody(taskType);
-
-        return JSONObject.toJSONString(taskMessage);
-    }
-
-    /**
      * 同步获取任务
      * @param taskType
      * @return
@@ -102,7 +62,7 @@ public final class Client {
         checkNet();
         try {
             if(is != null && out != null) {
-                out.println(parseGetTaskMessage(MessageType.SYNC_GET, taskType));
+                out.println(ClientManger.parseGetTaskMessage(MessageType.SYNC_GET, taskType));
                 out.flush();
 
                 BufferedReader reader = new BufferedReader(new InputStreamReader(is));
@@ -138,8 +98,8 @@ public final class Client {
     public void report(Object body) {
         checkNet();
         if(is != null && out != null) {
-            Header header = parseHeader(MessageType.REPORT, null);
-            Message message = parseMessage(header, body);
+            Header header = ClientManger.parseHeader(MessageType.REPORT, null);
+            Message message = ClientManger.parseMessage(header, body);
 
             try {
                 out.println(JSONObject.toJSONString(message));
@@ -165,7 +125,7 @@ public final class Client {
         try {
             checkNet();
             if(is != null && out != null) {
-                out.println(parseGetTaskMessage(MessageType.ASYNC_GET, taskType));
+                out.println(ClientManger.parseGetTaskMessage(MessageType.ASYNC_GET, taskType));
                 out.flush();
 
                 boolean isGet = false;

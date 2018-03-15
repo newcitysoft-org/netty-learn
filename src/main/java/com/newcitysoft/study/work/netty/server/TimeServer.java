@@ -1,5 +1,6 @@
 package com.newcitysoft.study.work.netty.server;
 
+import com.newcitysoft.study.netty.scene.socket.Const;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
@@ -14,9 +15,9 @@ import io.netty.handler.codec.string.StringDecoder;
  * @author lixin.tian@renren-inc.com
  * @date 2018/3/9 11:06
  */
-public class Server {
-    private final static int port = 9090;
-    public void bind() {
+public class TimeServer {
+
+    public void bind(int port) {
         EventLoopGroup boosGroup = new NioEventLoopGroup();
         EventLoopGroup workerGroup = new NioEventLoopGroup();
         try {
@@ -41,11 +42,11 @@ public class Server {
         @Override
         protected void initChannel(SocketChannel socketChannel) throws Exception {
             socketChannel.pipeline().addLast(new StringDecoder());
-            socketChannel.pipeline().addLast(new ServerHandler());
+            socketChannel.pipeline().addLast(new TimeServerHandler());
         }
     }
 
     public static void main(String[] args) {
-        new Server().bind();
+        new TimeServer().bind(Const.NETTY_PORT);
     }
 }
