@@ -44,13 +44,6 @@ public class TimeServer {
 
         @Override
         protected void initChannel(SocketChannel socketChannel) throws Exception {
-            ByteBuf delimiter = Unpooled.copiedBuffer("$_".getBytes());
-            // 解决TCP粘包导致的读半包或者多包问题的原因
-            // 换行符
-//            socketChannel.pipeline().addLast(new LineBasedFrameDecoder(1024));
-            // 特殊分隔符
-            socketChannel.pipeline().addLast(new DelimiterBasedFrameDecoder(1024, delimiter));
-//            socketChannel.pipeline().addLast(new FixedLengthFrameDecoder(1024));
             socketChannel.pipeline().addLast(new StringDecoder());
             socketChannel.pipeline().addLast(new TimeServerHandler());
         }

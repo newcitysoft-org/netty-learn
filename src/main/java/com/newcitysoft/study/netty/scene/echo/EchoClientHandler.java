@@ -22,15 +22,14 @@ public class EchoClientHandler
     }
 
     @Override
-    public void channelRead0(ChannelHandlerContext ctx, ByteBuf in) {
-        System.out.println(
-                "Client received: " + in.toString(CharsetUtil.UTF_8));
-    }
-
-    @Override
     public void exceptionCaught(ChannelHandlerContext ctx,
         Throwable cause) {
         cause.printStackTrace();
         ctx.close();
+    }
+
+    @Override
+    protected void messageReceived(ChannelHandlerContext channelHandlerContext, ByteBuf byteBuf) throws Exception {
+
     }
 }
