@@ -2,9 +2,9 @@ package com.newcitysoft.study.work.netty.client;
 
 import com.alibaba.fastjson.JSONObject;
 import com.newcitysoft.study.work.common.Const;
+import com.newcitysoft.study.work.common.TaskAsyncExecutor;
 import com.newcitysoft.study.work.entity.Message;
 import com.newcitysoft.study.work.entity.MessageType;
-import com.newcitysoft.study.work.common.TaskAsyncExecutor;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerAdapter;

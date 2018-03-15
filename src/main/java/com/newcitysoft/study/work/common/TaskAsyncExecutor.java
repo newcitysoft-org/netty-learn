@@ -11,7 +11,6 @@ public interface TaskAsyncExecutor {
      * @param tasks
      */
     void execute(String tasks);
-
     /**
      * 处理服务器相应
      * @param result
