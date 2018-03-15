@@ -30,6 +30,10 @@ public class ServerHandler extends ChannelHandlerAdapter {
         // 返回数据
         String data = ServerManager.handle(ServerManager.decode(body));
         System.out.println(data);
+        // mock
+
+        Thread.sleep(5000);
+
         ByteBuf resp = Unpooled.copiedBuffer((data + Const.delimiter).getBytes());
         ctx.writeAndFlush(resp);
     }

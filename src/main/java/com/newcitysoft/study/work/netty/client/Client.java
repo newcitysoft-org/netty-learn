@@ -75,6 +75,9 @@ public class Client {
         } catch (InterruptedException e) {
             group.shutdownGracefully();
             channel = null;
+        } finally {
+            group.shutdownGracefully();
+            channel = null;
         }
     }
 
