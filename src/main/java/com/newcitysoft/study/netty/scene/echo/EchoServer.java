@@ -19,7 +19,7 @@ public class EchoServer {
 
     public static void main(String[] args)
             throws Exception {
-        int port = 9090;
+        int port = 6789;
         new EchoServer(port).start();
     }
 

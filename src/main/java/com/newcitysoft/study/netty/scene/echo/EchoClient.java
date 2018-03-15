@@ -50,7 +50,7 @@ public class EchoClient {
     public static void main(String[] args)
             throws Exception {
         final String host = "127.0.0.1";
-        final int port = 9090;
+        final int port = 6789;
         new EchoClient(host, port).start();
     }
 }
