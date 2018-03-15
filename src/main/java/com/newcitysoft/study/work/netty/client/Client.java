@@ -26,7 +26,7 @@ import java.util.Map;
  */
 public class Client {
     private final static String host = "127.0.0.1";
-    private final static int port = 9999;
+    private final static int port = Const.port;
 
     private Channel channel = null;
 

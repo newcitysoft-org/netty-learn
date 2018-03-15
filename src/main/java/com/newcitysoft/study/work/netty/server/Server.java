@@ -19,8 +19,6 @@ import io.netty.handler.codec.string.StringDecoder;
  * @date 2018/3/9 11:06
  */
 public class Server {
-    private final static int port = 9999;
-
     public void bind() {
         EventLoopGroup boosGroup = new NioEventLoopGroup();
         EventLoopGroup workerGroup = new NioEventLoopGroup();
@@ -31,7 +29,7 @@ public class Server {
                     .option(ChannelOption.SO_BACKLOG, 1024)
                     .childHandler(new ChildChannelHandler());
             // 绑定端口
-            ChannelFuture f = b.bind(port).sync();
+            ChannelFuture f = b.bind(Const.port).sync();
             System.out.println(Server.class.getName() +
                     " started and listening for connections on " + f.channel().localAddress());
             // 等待服务端监听端口关闭
