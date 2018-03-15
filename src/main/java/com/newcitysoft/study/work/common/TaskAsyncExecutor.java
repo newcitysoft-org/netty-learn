@@ -1,4 +1,4 @@
-package com.newcitysoft.study.work.entity;
+package com.newcitysoft.study.work.common;
 
 /**
  * 任务异步执行器

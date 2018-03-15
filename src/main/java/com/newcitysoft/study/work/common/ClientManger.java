@@ -1,7 +1,10 @@
-package com.newcitysoft.study.work.entity;
+package com.newcitysoft.study.work.common;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.newcitysoft.study.work.entity.Header;
+import com.newcitysoft.study.work.entity.Message;
+import com.newcitysoft.study.work.entity.MessageType;
 
 import java.util.Map;
 

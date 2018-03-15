@@ -2,16 +2,13 @@ package com.newcitysoft.study.work.netty.client;
 
 import com.alibaba.fastjson.JSONObject;
 import com.newcitysoft.study.work.common.Const;
-import com.newcitysoft.study.work.entity.Header;
 import com.newcitysoft.study.work.entity.Message;
 import com.newcitysoft.study.work.entity.MessageType;
-import com.newcitysoft.study.work.entity.Result;
-import com.newcitysoft.study.work.entity.TaskAsyncExecutor;
+import com.newcitysoft.study.work.common.TaskAsyncExecutor;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerAdapter;
 import io.netty.channel.ChannelHandlerContext;
-import io.netty.util.internal.StringUtil;
 
 import java.util.logging.Logger;
 

@@ -1,11 +1,10 @@
 package com.newcitysoft.study.work.socket.plugin;
 
 import com.alibaba.fastjson.JSONArray;
-import com.newcitysoft.study.work.entity.Result;
 import com.newcitysoft.study.work.entity.TaskItem;
 import com.newcitysoft.study.work.entity.TaskResult;
 import com.newcitysoft.study.work.socket.client.Client;
-import com.newcitysoft.study.work.entity.TaskAsyncExecutor;
+import com.newcitysoft.study.work.common.TaskAsyncExecutor;
 import com.newcitysoft.study.work.util.MD5Utils;
 
 import java.util.LinkedList;

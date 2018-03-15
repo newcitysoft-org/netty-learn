@@ -1,6 +1,11 @@
-package com.newcitysoft.study.work.entity;
+package com.newcitysoft.study.work.common;
 
 import com.alibaba.fastjson.JSONObject;
+import com.newcitysoft.study.work.entity.Header;
+import com.newcitysoft.study.work.entity.Message;
+import com.newcitysoft.study.work.entity.MessageType;
+import com.newcitysoft.study.work.entity.Result;
+import com.newcitysoft.study.work.entity.TaskItem;
 
 import java.util.ArrayList;
 import java.util.List;

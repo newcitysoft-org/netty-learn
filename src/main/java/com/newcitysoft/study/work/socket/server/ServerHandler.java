@@ -4,18 +4,13 @@ import com.alibaba.fastjson.JSONObject;
 import com.newcitysoft.study.work.entity.Header;
 import com.newcitysoft.study.work.entity.Message;
 import com.newcitysoft.study.work.entity.MessageType;
-import com.newcitysoft.study.work.entity.Result;
-import com.newcitysoft.study.work.entity.ServerManager;
-import com.newcitysoft.study.work.entity.TaskItem;
+import com.newcitysoft.study.work.common.ServerManager;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
 
 /**
  * Socket数据包处理器

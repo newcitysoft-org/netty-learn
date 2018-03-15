@@ -2,11 +2,11 @@ package com.newcitysoft.study.work.socket.client;
 
 
 import com.alibaba.fastjson.JSONObject;
-import com.newcitysoft.study.work.entity.ClientManger;
+import com.newcitysoft.study.work.common.ClientManger;
 import com.newcitysoft.study.work.entity.Header;
 import com.newcitysoft.study.work.entity.Message;
 import com.newcitysoft.study.work.entity.MessageType;
-import com.newcitysoft.study.work.entity.TaskAsyncExecutor;
+import com.newcitysoft.study.work.common.TaskAsyncExecutor;
 
 import java.io.BufferedReader;
 import java.io.IOException;
