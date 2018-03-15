@@ -15,12 +15,12 @@ import java.util.logging.Logger;
  * @author lixin.tian@renren-inc.com
  * @date 2018/3/9 11:36
  */
-public class TimeClientHandler extends ChannelHandlerAdapter {
-    private static final Logger logger = Logger.getLogger(TimeClientHandler.class.getName());
+public class ClientHandler extends ChannelHandlerAdapter {
+    private static final Logger logger = Logger.getLogger(ClientHandler.class.getName());
 
     private byte[] req;
 
-    public TimeClientHandler() {
+    public ClientHandler() {
         Message packet = new Message();
         Header header = new Header();
 

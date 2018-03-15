@@ -2,8 +2,6 @@ package com.newcitysoft.study.work.netty.client;
 
 import com.newcitysoft.study.netty.scene.socket.Const;
 import io.netty.bootstrap.Bootstrap;
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
@@ -11,14 +9,13 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
-import io.netty.handler.codec.DelimiterBasedFrameDecoder;
 import io.netty.handler.codec.string.StringDecoder;
 
 /**
  * @author lixin.tian@renren-inc.com
  * @date 2018/3/9 11:29
  */
-public class TimeClient {
+public class Client {
 
     public void connect(String host, int port) {
         // 配置客户端NIO线程组
@@ -32,7 +29,7 @@ public class TimeClient {
                         @Override
                         protected void initChannel(SocketChannel socketChannel) throws Exception {
                             socketChannel.pipeline().addLast(new StringDecoder());
-                            socketChannel.pipeline().addLast(new TimeClientHandler());
+                            socketChannel.pipeline().addLast(new ClientHandler());
                         }
                     });
 
@@ -47,6 +44,6 @@ public class TimeClient {
 
     public static void main(String[] args) {
         int port = Const.NETTY_PORT;
-        new TimeClient().connect("127.0.0.1", port);
+        new Client().connect("127.0.0.1", port);
     }
 }
