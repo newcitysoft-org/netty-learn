@@ -159,7 +159,16 @@ public class ServerManager {
      */
     private static Message handleReport(Message packet){
         Message resp = new Message();
-        System.out.println(packet.getBody());
+        Header header = new Header();
+        Result result = new Result();
+
+        header.setType(MessageType.RESPONSE.value());
+
+        result.setCode(Result.Code.SUCCESS);
+
+        resp.setHeader(header);
+        resp.setBody(result);
+
         return resp;
     }
 
