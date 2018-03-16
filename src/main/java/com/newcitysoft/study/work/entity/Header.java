@@ -1,5 +1,6 @@
 package com.newcitysoft.study.work.entity;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -8,7 +9,8 @@ import java.util.Map;
  * @author lixin.tian@renren-inc.com
  * @date 2018/3/13 11:08
  */
-public class Header {
+public class Header implements Serializable{
+    
     private int length;
     private int sessionID;
     private byte type;

@@ -1,10 +1,12 @@
 package com.newcitysoft.study.work.entity;
 
+import java.io.Serializable;
+
 /**
  * @author lixin.tian@renren-inc.com
  * @date 2018/3/12 10:52
  */
-public class TaskItem {
+public class TaskItem implements Serializable{
     private String taskId;
     private Object content;
     private long timestamp;

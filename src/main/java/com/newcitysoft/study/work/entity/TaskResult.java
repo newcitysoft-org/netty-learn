@@ -1,10 +1,12 @@
 package com.newcitysoft.study.work.entity;
 
+import java.io.Serializable;
+
 /**
  * @author lixin.tian@renren-inc.com
  * @date 2018/3/12 13:50
  */
-public class TaskResult {
+public class TaskResult implements Serializable{
     private String taskId;
     private Object result;
     private long getTime;
