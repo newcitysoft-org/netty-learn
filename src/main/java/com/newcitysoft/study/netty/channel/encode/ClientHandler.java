@@ -21,20 +21,22 @@ public class ClientHandler extends ChannelHandlerAdapter {
         ctx.close();
     }
 
-    @Override
-    public void channelActive(ChannelHandlerContext ctx) throws Exception {
-        User user = new User();
+    private static User user = new User();
 
+    static {
         user.setName("tianlixin");
         user.setPassword("123456");
+    }
 
+    @Override
+    public void channelActive(ChannelHandlerContext ctx) throws Exception {
         ctx.writeAndFlush(user);
     }
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-        User user = (User) msg;
-        System.out.println(user.toString());
+        System.out.println(msg.toString());
+        ctx.writeAndFlush(user);
     }
 
     @Override

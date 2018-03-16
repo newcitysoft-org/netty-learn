@@ -14,16 +14,17 @@ public class ServerHandler extends ChannelHandlerAdapter {
         ctx.close();
     }
 
+    private static User newUser = new User();
+
+    static {
+        newUser.setName("xiaohuan");
+        newUser.setPassword("123456");
+    }
+
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         User user = (User) msg;
         System.out.println(user.toString());
-
-        User newUser = new User();
-
-        newUser.setName("xiaohuan");
-        newUser.setPassword("123456");
-
         ctx.writeAndFlush(newUser);
     }
 
