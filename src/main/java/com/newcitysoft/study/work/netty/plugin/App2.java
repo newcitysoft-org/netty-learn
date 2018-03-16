@@ -48,12 +48,12 @@ public class App2 {
 
             @Override
             public void finish() {
+                System.out.println("Report is success!");
                 try {
-                    Thread.sleep(5000);
+                    Thread.sleep(2000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                System.out.println("ss");
                 main(args);
             }
 

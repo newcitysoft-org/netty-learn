@@ -91,14 +91,18 @@ public class ClientHandler extends ChannelHandlerAdapter {
      * @param temp
      */
     private static void execAndReport(ChannelHandlerContext ctx, TaskAsyncExecutor executor, String temp) {
+        // 1.任务执行
         executor.execute(temp);
+        // 2.获取任务执行结果
         List<TaskResult> results = executor.report();
+        // 3.上报任务结果
         if(results != null && results.size() > 0) {
             Message report = ClientManger.parseReport(results, null);
             ChannelFuture future = ctx.writeAndFlush(report);
             future.addListener(new ChannelFutureListener() {
                 @Override
                 public void operationComplete(ChannelFuture channelFuture) throws Exception {
+                    // 4.任务上报完成回调
                     executor.finish();
                 }
             });
@@ -108,6 +112,6 @@ public class ClientHandler extends ChannelHandlerAdapter {
     @Override
     public void channelReadComplete(ChannelHandlerContext ctx) throws Exception {
         ctx.flush();
-        ctx.close();
+        //ctx.close();
     }
 }

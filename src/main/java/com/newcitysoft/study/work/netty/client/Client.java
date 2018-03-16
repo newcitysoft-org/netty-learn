@@ -70,32 +70,14 @@ public class Client {
         }
     }
 
-//    private boolean isConnected() {
-//        if(channel != null && channel.isRegistered()) {
-//            return true;
-//        }
-//        return false;
-//    }
-//
-//    private void checkAndConn(String content, TaskAsyncExecutor executor) {
-//        System.out.println(channel);
-//        if(!isConnected()) {
-//            connect(content, executor);
-//        }
-//    }
-
     public void getTasks(String type, TaskAsyncExecutor executor) {
         Message message = ClientManger.parseGetTaskMessage(MessageType.SYNC_GET, type);
         connect(message, executor);
     }
 
+    @Deprecated
     public void report(Object result, Map<String, Object> attachment) {
         Message message = ClientManger.parseReport(result, attachment);
         connect(message, null);
-////        byte[] req = msg.getBytes();
-////        ByteBuf message = Unpooled.buffer(req.length);
-////        message.writeBytes(req);
-//        ByteBuf buf = Unpooled.copiedBuffer(msg, CharsetUtil.UTF_8);
-//        channel.writeAndFlush(buf);
     }
 }

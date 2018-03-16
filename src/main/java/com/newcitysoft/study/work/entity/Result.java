@@ -1,11 +1,13 @@
 package com.newcitysoft.study.work.entity;
 
+import java.io.Serializable;
+
 /**
  * 任务相应结果类
  * @author lixin.tian@renren-inc.com
  * @date 2018/3/12 11:06
  */
-public class Result {
+public class Result implements Serializable{
     public static class Code {
         /**
          * 数据封装错误
