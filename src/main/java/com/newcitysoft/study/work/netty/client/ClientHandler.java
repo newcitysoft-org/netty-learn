@@ -1,16 +1,17 @@
 package com.newcitysoft.study.work.netty.client;
 
 import com.alibaba.fastjson.JSONObject;
-import com.newcitysoft.study.work.common.Const;
+import com.newcitysoft.study.work.common.ClientManger;
 import com.newcitysoft.study.work.common.TaskAsyncExecutor;
 import com.newcitysoft.study.work.entity.Message;
 import com.newcitysoft.study.work.entity.MessageType;
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
-import io.netty.channel.Channel;
+import com.newcitysoft.study.work.entity.TaskResult;
+import io.netty.channel.ChannelFuture;
+import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerAdapter;
 import io.netty.channel.ChannelHandlerContext;
 
+import java.util.List;
 import java.util.logging.Logger;
 
 /**
@@ -20,30 +21,12 @@ import java.util.logging.Logger;
 public class ClientHandler extends ChannelHandlerAdapter {
     private static final Logger logger = Logger.getLogger(ClientHandler.class.getName());
 
-    private byte[] req;
+    private Message message;
     private TaskAsyncExecutor executor;
 
-    private Channel channel;
-
-    public ClientHandler(String content, TaskAsyncExecutor executor) {
+    public ClientHandler(Message message, TaskAsyncExecutor executor) {
         this.executor = executor;
-        if(content != null && content.length() > 0) {
-            this.req = (content + Const.delimiter).getBytes();
-        }
-    }
-
-    public void sendGetTask() {
-        if(req.length > 0){
-            ByteBuf message = Unpooled.buffer(req.length);
-            message.writeBytes(req);
-            channel.writeAndFlush(message);
-        }
-    }
-
-    @Override
-    public void handlerAdded(ChannelHandlerContext ctx) throws Exception {
-        System.out.println("added");
-        this.channel = ctx.channel();
+        this.message = message;
     }
 
     @Override
@@ -54,53 +37,71 @@ public class ClientHandler extends ChannelHandlerAdapter {
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
-        System.out.println("channelActive");
-        if(req.length > 0){
-            ByteBuf message = Unpooled.buffer(req.length);
-            message.writeBytes(req);
-            ctx.writeAndFlush(message);
-//            ChannelFuture cf = ctx.writeAndFlush(message);
-//            cf.addListener(new ChannelFutureListener() {
-//                @Override
-//                public void operationComplete(ChannelFuture channelFuture) throws Exception {
-//                    System.out.println("完成操作！");
-//                    executor.getResponse("aa");
-//                }
-//            });
-        }
+        ChannelFuture future = ctx.writeAndFlush(message);
+        future.addListener(new ChannelFutureListener() {
+            @Override
+            public void operationComplete(ChannelFuture channelFuture) throws Exception {
+                System.out.println("操作成功！");
+            }
+        });
     }
+
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-        String resp = (String) msg;
-        System.out.println(resp);
-        try {
-            Message message = JSONObject.parseObject(resp, Message.class);
+        Message message = (Message) msg;
+        System.out.println(message.toString());
+        handleChannelRead(ctx, this.executor, message);
+    }
 
-            int type = message.getHeader().getType();
-            Object body = message.getBody();
+    /**
+     * 处理通道读操作
+     * @param ctx
+     * @param executor
+     * @param message
+     */
+    private static void handleChannelRead(ChannelHandlerContext ctx, TaskAsyncExecutor executor, Message message) {
+        int type = message.getHeader().getType();
+        Object body = message.getBody();
 
-            String temp = null;
-            if(body instanceof String) {
-                temp = (String) body;
-            }else {
-                temp = JSONObject.toJSONString(body);
-            }
-            System.out.println(temp);
-            MessageType messageType = MessageType.fromTypeName(type);
-            System.out.println(messageType);
-            switch (messageType) {
-                case SEND:
-                    executor.execute(temp);
-                    break;
-//                case RESPONSE:
-//                    executor.getResponse(temp);
-//                    break;
-                default:
-                    break;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+        String temp = null;
+        if(body instanceof String) {
+            temp = (String) body;
+        }else {
+            temp = JSONObject.toJSONString(body);
+        }
+
+        MessageType messageType = MessageType.fromTypeName(type);
+        switch (messageType) {
+            case SEND:
+                execAndReport(ctx, executor, temp);
+                break;
+            case RESPONSE:
+                executor.finish();
+                break;
+            default:
+                break;
+        }
+    }
+
+    /**
+     * 执行并且上报任务
+     * @param ctx
+     * @param executor
+     * @param temp
+     */
+    private static void execAndReport(ChannelHandlerContext ctx, TaskAsyncExecutor executor, String temp) {
+        executor.execute(temp);
+        List<TaskResult> results = executor.report();
+        if(results != null && results.size() > 0) {
+            Message report = ClientManger.parseReport(results, null);
+            ChannelFuture future = ctx.writeAndFlush(report);
+            future.addListener(new ChannelFutureListener() {
+                @Override
+                public void operationComplete(ChannelFuture channelFuture) throws Exception {
+                    executor.finish();
+                }
+            });
         }
     }
 

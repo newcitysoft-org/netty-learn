@@ -1,5 +1,9 @@
 package com.newcitysoft.study.work.common;
 
+import com.newcitysoft.study.work.entity.TaskResult;
+
+import java.util.List;
+
 /**
  * 任务异步执行器
  * @author lixin.tian@renren-inc.com
@@ -13,7 +17,11 @@ public interface TaskAsyncExecutor {
     void execute(String tasks);
     /**
      * 处理服务器相应
-     * @param result
      */
-    void getResponse(String result);
+    void finish();
+    /**
+     * 上报
+     * @return
+     */
+    List<TaskResult> report();
 }

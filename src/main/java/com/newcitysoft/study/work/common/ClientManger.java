@@ -1,7 +1,5 @@
 package com.newcitysoft.study.work.common;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.newcitysoft.study.work.entity.Header;
 import com.newcitysoft.study.work.entity.Message;
 import com.newcitysoft.study.work.entity.MessageType;
@@ -43,20 +41,20 @@ public class ClientManger {
         return message;
     }
 
-    public static String parseGetTaskMessage(MessageType type, String taskType) {
+    public static Message parseGetTaskMessage(MessageType type, String taskType) {
         Header header = parseHeader(type, null);
         Message taskMessage = new Message();
 
         taskMessage.setHeader(header);
         taskMessage.setBody(taskType);
 
-        return JSONObject.toJSONString(taskMessage);
+        return taskMessage;
     }
 
-    public static String parseReport(Object body, Map<String, Object> attachment) {
+    public static Message parseReport(Object body, Map<String, Object> attachment) {
         Header header = parseHeader(MessageType.REPORT, attachment);
         Message message = parseMessage(header, body);
 
-        return JSONObject.toJSONString(message);
+        return message;
     }
 }

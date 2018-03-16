@@ -2,6 +2,7 @@ package com.newcitysoft.study.work.netty.client;
 
 import com.newcitysoft.study.work.common.Const;
 import com.newcitysoft.study.work.common.ClientManger;
+import com.newcitysoft.study.work.entity.Message;
 import com.newcitysoft.study.work.entity.MessageType;
 import com.newcitysoft.study.work.common.TaskAsyncExecutor;
 import io.netty.bootstrap.Bootstrap;
@@ -16,6 +17,10 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.codec.DelimiterBasedFrameDecoder;
+import io.netty.handler.codec.serialization.ClassResolver;
+import io.netty.handler.codec.serialization.ClassResolvers;
+import io.netty.handler.codec.serialization.ObjectDecoder;
+import io.netty.handler.codec.serialization.ObjectEncoder;
 import io.netty.handler.codec.string.StringDecoder;
 import io.netty.util.CharsetUtil;
 
@@ -35,10 +40,8 @@ public class Client {
     private Client(){}
     public static Client getInstance(){ return instance; }
 
-    private ClientHandler clientHandler = null;
-
-    public void connect(String content, TaskAsyncExecutor executor) {
-        clientHandler = new ClientHandler(content, executor);
+    public void connect(Message message, TaskAsyncExecutor executor) {
+        ClientHandler clientHandler = new ClientHandler(message, executor);
         // 配置客户端NIO线程组
         EventLoopGroup group = new NioEventLoopGroup();
         try {
@@ -49,36 +52,15 @@ public class Client {
                     .handler(new ChannelInitializer<SocketChannel>() {
                         @Override
                         protected void initChannel(SocketChannel socketChannel) throws Exception {
-                            ByteBuf delimiter = Unpooled.copiedBuffer(Const.delimiter.getBytes());
-
-                            channel = socketChannel;
-
-                            socketChannel.pipeline().addLast(new DelimiterBasedFrameDecoder(Const.LENGTH_MAX_FRAME, delimiter));
-                            socketChannel.pipeline().addLast(new StringDecoder());
+                            socketChannel.pipeline().addLast(new ObjectEncoder());
+                            socketChannel.pipeline().addLast(new ObjectDecoder(ClassResolvers.cacheDisabled(this
+                                    .getClass().getClassLoader())));
                             socketChannel.pipeline().addLast(clientHandler);
-                            //socketChannel.pipeline().addLast(new ClientOutboundHandler());
                         }
                     });
 
-            // 发起异步连接操作
             ChannelFuture f = b.connect(host, port).sync();
-//            f.addListener(new ChannelFutureListener() {
-//                @Override
-//                public void operationComplete(ChannelFuture channelFuture) throws Exception {
-//                    if(channelFuture.isSuccess()) {
-//                        channel = channelFuture.channel();
-//                        System.out.println(channel);
-//                        System.out.println("已连接服务端。。。。");
-////                        byte[] req = "Hi Server!".getBytes();
-////                        ByteBuf message = Unpooled.buffer(req.length);
-////                        message.writeBytes(req);
-////                        channelFuture.channel().writeAndFlush(message);
-//                    }
-//                }
-//            });
-            // 等待客户端链路关闭
             f.channel().closeFuture().sync();
-            System.out.println("----关闭");
         } catch (InterruptedException e) {
             group.shutdownGracefully();
             channel = null;
@@ -103,13 +85,13 @@ public class Client {
 //    }
 
     public void getTasks(String type, TaskAsyncExecutor executor) {
-        String tsk = ClientManger.parseGetTaskMessage(MessageType.SYNC_GET, type);
-        connect(tsk, executor);
+        Message message = ClientManger.parseGetTaskMessage(MessageType.SYNC_GET, type);
+        connect(message, executor);
     }
 
     public void report(Object result, Map<String, Object> attachment) {
-        String msg = ClientManger.parseReport(result, attachment);
-        connect(msg, null);
+        Message message = ClientManger.parseReport(result, attachment);
+        connect(message, null);
 ////        byte[] req = msg.getBytes();
 ////        ByteBuf message = Unpooled.buffer(req.length);
 ////        message.writeBytes(req);

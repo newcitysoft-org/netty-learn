@@ -19,10 +19,10 @@ public class App {
         Client client = Client.getInstance();
 
         client.asyncGetTasks("md5", new TaskAsyncExecutor() {
+            List<TaskResult> results = new LinkedList<>();
             @Override
             public void execute(String tasks) {
                 List<TaskItem> tks = JSONArray.parseArray(tasks, TaskItem.class);
-                List<TaskResult> results = new LinkedList<>();
 
                 tks.forEach(task -> {
                     System.out.println(task.getTaskId());
@@ -36,12 +36,17 @@ public class App {
                     results.add(result);
                 });
 
-                client.report(results);
+                //client.report(results);
             }
 
             @Override
-            public void getResponse(String result) {
+            public void finish() {
 
+            }
+
+            @Override
+            public List<TaskResult> report() {
+                return results;
             }
         });
 

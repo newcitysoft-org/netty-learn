@@ -27,10 +27,11 @@ public class App {
         @Override
         public void run() {
             client.getTasks("md5", new TaskAsyncExecutor() {
+                List<TaskResult> results = new LinkedList<>();
                 @Override
                 public void execute(String tasks) {
                     List<TaskItem> tks = JSONArray.parseArray(tasks, TaskItem.class);
-                    List<TaskResult> results = new LinkedList<>();
+
                     tks.forEach(task -> {
                         TaskResult result = new TaskResult();
 
@@ -42,13 +43,16 @@ public class App {
                         System.out.println(task.getTaskId());
                         results.add(result);
                     });
-
-                    client.report(results, null);
                 }
 
                 @Override
-                public void getResponse(String result) {
+                public void finish() {
                     System.out.println("sss");
+                }
+
+                @Override
+                public List<TaskResult> report() {
+                    return results;
                 }
             });
         }

@@ -12,6 +12,9 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.codec.DelimiterBasedFrameDecoder;
+import io.netty.handler.codec.serialization.ClassResolvers;
+import io.netty.handler.codec.serialization.ObjectDecoder;
+import io.netty.handler.codec.serialization.ObjectEncoder;
 import io.netty.handler.codec.string.StringDecoder;
 
 /**
@@ -45,9 +48,9 @@ public class Server {
 
         @Override
         protected void initChannel(SocketChannel socketChannel) throws Exception {
-            ByteBuf delimiter = Unpooled.copiedBuffer(Const.delimiter.getBytes());
-            socketChannel.pipeline().addLast(new DelimiterBasedFrameDecoder(Const.LENGTH_MAX_FRAME, delimiter));
-            socketChannel.pipeline().addLast(new StringDecoder());
+            socketChannel.pipeline().addLast(new ObjectEncoder());
+            socketChannel.pipeline().addLast(new ObjectDecoder(ClassResolvers.cacheDisabled(this
+                    .getClass().getClassLoader())));
             socketChannel.pipeline().addLast(new ServerHandler());
         }
     }

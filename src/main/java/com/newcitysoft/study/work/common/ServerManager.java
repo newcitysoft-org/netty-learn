@@ -30,7 +30,7 @@ public class ServerManager {
      * @param packet
      * @return
      */
-    public static String handle(Message packet) {
+    public static Message handle(Message packet) {
         Message resp = checkPacket(packet);
         if(((Result)resp.getBody()).getResult() == Result.RESULT_FAILURE) {
 
@@ -55,7 +55,8 @@ public class ServerManager {
             resp =  result;
         }
 
-        return JSONObject.toJSONString(resp);
+        System.out.println("server-handler:" + resp);
+        return resp;
     }
 
     private static final Random random = new Random();

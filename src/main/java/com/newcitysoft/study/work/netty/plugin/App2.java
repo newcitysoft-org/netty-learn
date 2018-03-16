@@ -8,6 +8,7 @@ import com.newcitysoft.study.work.entity.TaskResult;
 import com.newcitysoft.study.work.netty.client.Client;
 import com.newcitysoft.study.work.util.MD5Utils;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -34,18 +35,31 @@ public class App2 {
         return results;
     }
 
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) {
         Client client = Client.getInstance();
         client.getTasks("md5", new TaskAsyncExecutor() {
+            List<TaskResult> taskResults = new ArrayList<>();
+
             @Override
             public void execute(String tasks) {
                 List<TaskItem> tks = JSONArray.parseArray(tasks, TaskItem.class);
-                client.report(doTasks(tks), null);
+                taskResults.addAll(doTasks(tks));
             }
 
             @Override
-            public void getResponse(String result) {
-                System.out.println("sss");
+            public void finish() {
+                try {
+                    Thread.sleep(5000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                System.out.println("ss");
+                main(args);
+            }
+
+            @Override
+            public List<TaskResult> report() {
+                return taskResults;
             }
         });
     }
