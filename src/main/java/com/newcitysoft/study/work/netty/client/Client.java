@@ -17,6 +17,7 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.codec.DelimiterBasedFrameDecoder;
 import io.netty.handler.codec.string.StringDecoder;
+import io.netty.util.CharsetUtil;
 
 import java.util.Map;
 
@@ -34,7 +35,10 @@ public class Client {
     private Client(){}
     public static Client getInstance(){ return instance; }
 
+    private ClientHandler clientHandler = null;
+
     public void connect(String content, TaskAsyncExecutor executor) {
+        clientHandler = new ClientHandler(content, executor);
         // 配置客户端NIO线程组
         EventLoopGroup group = new NioEventLoopGroup();
         try {
@@ -46,9 +50,13 @@ public class Client {
                         @Override
                         protected void initChannel(SocketChannel socketChannel) throws Exception {
                             ByteBuf delimiter = Unpooled.copiedBuffer(Const.delimiter.getBytes());
+
+                            channel = socketChannel;
+
                             socketChannel.pipeline().addLast(new DelimiterBasedFrameDecoder(Const.LENGTH_MAX_FRAME, delimiter));
                             socketChannel.pipeline().addLast(new StringDecoder());
-                            socketChannel.pipeline().addLast(new ClientHandler(content, executor));
+                            socketChannel.pipeline().addLast(clientHandler);
+                            //socketChannel.pipeline().addLast(new ClientOutboundHandler());
                         }
                     });
 
@@ -102,5 +110,10 @@ public class Client {
     public void report(Object result, Map<String, Object> attachment) {
         String msg = ClientManger.parseReport(result, attachment);
         connect(msg, null);
+////        byte[] req = msg.getBytes();
+////        ByteBuf message = Unpooled.buffer(req.length);
+////        message.writeBytes(req);
+//        ByteBuf buf = Unpooled.copiedBuffer(msg, CharsetUtil.UTF_8);
+//        channel.writeAndFlush(buf);
     }
 }

@@ -7,6 +7,7 @@ import com.newcitysoft.study.work.entity.Message;
 import com.newcitysoft.study.work.entity.MessageType;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
+import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerAdapter;
 import io.netty.channel.ChannelHandlerContext;
 
@@ -22,11 +23,27 @@ public class ClientHandler extends ChannelHandlerAdapter {
     private byte[] req;
     private TaskAsyncExecutor executor;
 
+    private Channel channel;
+
     public ClientHandler(String content, TaskAsyncExecutor executor) {
         this.executor = executor;
         if(content != null && content.length() > 0) {
             this.req = (content + Const.delimiter).getBytes();
         }
+    }
+
+    public void sendGetTask() {
+        if(req.length > 0){
+            ByteBuf message = Unpooled.buffer(req.length);
+            message.writeBytes(req);
+            channel.writeAndFlush(message);
+        }
+    }
+
+    @Override
+    public void handlerAdded(ChannelHandlerContext ctx) throws Exception {
+        System.out.println("added");
+        this.channel = ctx.channel();
     }
 
     @Override
@@ -37,10 +54,19 @@ public class ClientHandler extends ChannelHandlerAdapter {
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
+        System.out.println("channelActive");
         if(req.length > 0){
             ByteBuf message = Unpooled.buffer(req.length);
             message.writeBytes(req);
             ctx.writeAndFlush(message);
+//            ChannelFuture cf = ctx.writeAndFlush(message);
+//            cf.addListener(new ChannelFutureListener() {
+//                @Override
+//                public void operationComplete(ChannelFuture channelFuture) throws Exception {
+//                    System.out.println("完成操作！");
+//                    executor.getResponse("aa");
+//                }
+//            });
         }
     }
 
@@ -83,6 +109,4 @@ public class ClientHandler extends ChannelHandlerAdapter {
         ctx.flush();
         ctx.close();
     }
-
-
 }
