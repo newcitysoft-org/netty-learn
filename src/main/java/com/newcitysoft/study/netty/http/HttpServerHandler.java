@@ -34,7 +34,12 @@ import java.io.File;
 import java.util.List;
 import java.util.Map;
 
-public class HttpHelloWorldServerHandler extends ChannelHandlerAdapter {
+/**
+ * Http服务端处理器
+ * @author lixin.tian@renren-inc.com
+ * @date 2018-03-19 15:53
+ */
+public class HttpServerHandler extends ChannelHandlerAdapter {
     private static final byte[] CONTENT = { 'H', 'e', 'l', 'l', 'o', ' ', 'W', 'o', 'r', 'l', 'd' };
 
     private static final AsciiString CONTENT_TYPE = AsciiString.of("Content-Type");
