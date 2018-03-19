@@ -24,7 +24,11 @@ public final class HttpServer {
         EventLoopGroup workerGroup = new NioEventLoopGroup();
         try {
             ServerBootstrap b = new ServerBootstrap();
+
             b.option(ChannelOption.SO_BACKLOG, 1024);
+            b.childOption(ChannelOption.SO_KEEPALIVE, true);
+            b.childOption(ChannelOption.TCP_NODELAY, true);
+
             b.group(bossGroup, workerGroup)
              .channel(NioServerSocketChannel.class)
              .handler(new LoggingHandler(LogLevel.INFO))
