@@ -16,7 +16,7 @@ import io.netty.handler.logging.LoggingHandler;
  */
 public final class HttpServer {
 
-    static final boolean SSL = System.getProperty("ssl") != null;
+    static final boolean SSL = false;
     static final int PORT = Integer.parseInt(System.getProperty("port", SSL? "8443" : "8080"));
 
     public static void main(String[] args) throws Exception {
@@ -32,7 +32,7 @@ public final class HttpServer {
             b.group(bossGroup, workerGroup)
              .channel(NioServerSocketChannel.class)
              .handler(new LoggingHandler(LogLevel.INFO))
-             .childHandler(new HttpServerInitializer());
+             .childHandler(new HttpServerInitializer(SSL, false));
 
             Channel ch = b.bind(PORT).sync().channel();
 
