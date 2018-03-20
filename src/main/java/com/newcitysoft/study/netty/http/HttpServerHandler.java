@@ -30,6 +30,9 @@ import java.io.File;
 import java.util.List;
 import java.util.Map;
 
+import static io.netty.handler.codec.http.HttpHeaderNames.CONNECTION;
+import static io.netty.handler.codec.http.HttpHeaderNames.CONTENT_LENGTH;
+
 /**
  * Http服务端处理器
  * @author lixin.tian@renren-inc.com
@@ -124,16 +127,16 @@ public class HttpServerHandler extends ChannelHandlerAdapter {
 
         }else if(contentType.equals("application/x-www-form-urlencoded")){
             //方式一：使用 QueryStringDecoder
-			String jsonStr = fullRequest.content().toString(Charsets.toCharset(CharEncoding.UTF_8));
-			QueryStringDecoder queryDecoder = new QueryStringDecoder(jsonStr, false);
-			Map<String, List<String>> uriAttributes = queryDecoder.parameters();
+            String jsonStr = fullRequest.content().toString(Charsets.toCharset(CharEncoding.UTF_8));
+            QueryStringDecoder queryDecoder = new QueryStringDecoder(jsonStr, false);
+            Map<String, List<String>> uriAttributes = queryDecoder.parameters();
             for (Map.Entry<String, List<String>> attr : uriAttributes.entrySet()) {
                 for (String attrVal : attr.getValue()) {
                     System.out.println(attr.getKey() + "=" + attrVal);
                 }
             }
             //方式二：使用 HttpPostRequestDecoder
-           // initPostRequestDecoder();
+            // initPostRequestDecoder();
 //            List<InterfaceHttpData> datas = decoder.getBodyHttpDatas();
 //            for (InterfaceHttpData data : datas) {
 //                if(data.getHttpDataType() == InterfaceHttpData.HttpDataType.Attribute) {
@@ -181,7 +184,7 @@ public class HttpServerHandler extends ChannelHandlerAdapter {
         response = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, status, byteBuf);
         boolean close = isClose();
         if(!close && !forceClose){
-            response.headers().add(org.apache.http.HttpHeaders.CONTENT_LENGTH, String.valueOf(byteBuf.readableBytes()));
+            response.headers().add(CONTENT_LENGTH, String.valueOf(byteBuf.readableBytes()));
         }
         ChannelFuture future = channel.write(response);
         if(close || forceClose){
@@ -207,10 +210,11 @@ public class HttpServerHandler extends ChannelHandlerAdapter {
 //    }
 
     private boolean isClose(){
-        if(request.headers().contains(org.apache.http.HttpHeaders.CONNECTION, CONNECTION_CLOSE, true) ||
+        if(request.headers().contains(CONNECTION, CONNECTION_CLOSE, true) ||
                 (request.protocolVersion().equals(HttpVersion.HTTP_1_0) &&
-                        !request.headers().contains(org.apache.http.HttpHeaders.CONNECTION, CONNECTION_KEEP_ALIVE, true)))
+                        !request.headers().contains(CONNECTION, CONNECTION_KEEP_ALIVE, true))) {
             return true;
+        }
         return false;
     }
 }
