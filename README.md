@@ -10,6 +10,10 @@ Netty是基于Java NIO client-server的网络应用框架，使用Netty可以快
 
 ![](/file/http1.png)
 
+## 项目链接
+
 * [Netty实战书籍源码](https://github.com/normanmaurer/netty-in-action)
 
 * [Netty官方开放的Demo](https://github.com/netty/netty/tree/4.1/example)
+
+* [Netty权威指南项目](https://github.com/wuyinxian124/nettybook2)
