@@ -19,16 +19,16 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
     <script type="text/javascript">
         function log(msg) {
-            var log = $('#log')
+            var log = $('#log');
             log.append(msg + " \n").scrollTop(log[0].scrollHeight - log.height());
         }
         $(function () {
-            $('#url').val((location.protocol.indexOf('https') == -1 ? 'ws://' : 'wss://') + location.host + '/ws')
+            $('#url').val((location.protocol.indexOf('https') == -1 ? 'ws://' : 'wss://') + location.host + '/ws');
 
             if (!WebSocket) {
-                $('#not-supported').show()
+                $('#not-supported').show();
             } else {
-                var ws = null
+                var ws = null;
                 $('#connect').click(function () {
                     if (ws == null || ws.readyState != 1) {
                         ws = new WebSocket($('#url').val());
@@ -38,7 +38,8 @@
                         };
 
                         ws.onopen = function () {
-                            log('connected')
+                            console.log(ws);
+                            log('connected');
                         };
 
                         ws.onclose = function () {
@@ -56,13 +57,13 @@
                 });
 
                 $('#send').click(function () {
-                    var msg = $('#msg').val()
-                    console.log(msg)
-                    if (ws.send(msg)) {
-                        log('Message sent')
-                    } else {
-                        log('Message not sent')
-                    }
+                    var msg = $('#msg').val();
+                    console.log(ws.send(msg));
+                    // if (ws.send(msg)) {
+                    //     log('Message sent')
+                    // } else {
+                    //     log('Message not sent')
+                    // }
                 })
 
             }

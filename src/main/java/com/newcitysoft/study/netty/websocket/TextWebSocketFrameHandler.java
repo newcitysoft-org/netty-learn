@@ -36,8 +36,9 @@ public class TextWebSocketFrameHandler
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+        //super.channelRead(ctx, textWebSocketFrame);
         TextWebSocketFrame textWebSocketFrame = (TextWebSocketFrame) msg;
-        super.channelRead(ctx, textWebSocketFrame);
+        group.writeAndFlush(textWebSocketFrame.retain());
     }
 
     @Override
