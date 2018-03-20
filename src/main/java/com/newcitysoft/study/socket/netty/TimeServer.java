@@ -1,7 +1,9 @@
-package com.newcitysoft.study.netty.channel.encode;
+package com.newcitysoft.study.socket.netty;
 
 import com.newcitysoft.study.socket.Const;
 import io.netty.bootstrap.ServerBootstrap;
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
@@ -9,16 +11,14 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
-import io.netty.handler.codec.serialization.ClassResolvers;
-import io.netty.handler.codec.serialization.ObjectDecoder;
-import io.netty.handler.codec.serialization.ObjectEncoder;
+import io.netty.handler.codec.DelimiterBasedFrameDecoder;
 import io.netty.handler.codec.string.StringDecoder;
 
 /**
  * @author lixin.tian@renren-inc.com
  * @date 2018/3/9 11:06
  */
-public class Server {
+public class TimeServer {
 
     public void bind(int port) {
         EventLoopGroup boosGroup = new NioEventLoopGroup();
@@ -44,14 +44,12 @@ public class Server {
 
         @Override
         protected void initChannel(SocketChannel socketChannel) throws Exception {
-            socketChannel.pipeline().addLast(new ObjectEncoder());
-            socketChannel.pipeline().addLast(new ObjectDecoder(ClassResolvers.cacheDisabled(this
-                    .getClass().getClassLoader())));
-            socketChannel.pipeline().addLast(new ServerHandler());
+            socketChannel.pipeline().addLast(new StringDecoder());
+            socketChannel.pipeline().addLast(new TimeServerHandler());
         }
     }
 
     public static void main(String[] args) {
-        new Server().bind(Const.NETTY_PORT);
+        new TimeServer().bind(Const.NETTY_PORT);
     }
 }
