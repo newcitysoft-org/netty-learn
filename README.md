@@ -8,4 +8,8 @@ Netty是基于Java NIO client-server的网络应用框架，使用Netty可以快
 
 ## 基于Netty实现Http协议
 
-[](/file/http1.png)
+![](/file/http1.png)
+
+* [Netty实战书籍源码](https://github.com/normanmaurer/netty-in-action)
+
+* [Netty官方开放的Demo](https://github.com/netty/netty/tree/4.1/example)
