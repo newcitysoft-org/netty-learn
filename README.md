@@ -19,8 +19,17 @@ Netty是基于Java NIO client-server的网络应用框架，使用Netty可以快
 * [Netty权威指南项目](https://github.com/wuyinxian124/nettybook2)
 
 ## 引入技术
-### 高性能队列：基于内存的无锁消息队列开源框架
+### 1.Disruptor：内存无锁消息队列框架
 * [Java Disruptor工作原理，谁能用一个比喻形容下?](https://www.zhihu.com/question/23235063)
 * [并发框架Disruptor译文](http://ifeve.com/disruptor/)
 * [高性能队列——Disruptor](https://tech.meituan.com/disruptor.html)
 * [Introduction on github](https://github.com/LMAX-Exchange/disruptor/wiki/Introduction)
+
+### 2.Netty-socketio:
+This project is an open-source Java implementation of Socket.IO server. Based on Netty server framework.
+
+* [github源码](https://github.com/mrniko/netty-socketio)
+
+### 3.Logback
+
+* [logback 配置详解](https://www.jianshu.com/p/1ded57f6c4e3)
