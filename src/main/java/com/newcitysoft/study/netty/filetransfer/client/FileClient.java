@@ -17,8 +17,6 @@ import java.net.InetSocketAddress;
  */
 public class FileClient {
 
-    private static final File file = new File("D:\\data\\socket\\client\\123.txt");
-
     public void connect(String host, int port) {
         EventLoopGroup group = new NioEventLoopGroup();
         try {
@@ -27,7 +25,7 @@ public class FileClient {
                     .channel(NioSocketChannel.class)
                     .option(ChannelOption.TCP_NODELAY, true)
                     .remoteAddress(new InetSocketAddress(host, port))
-                    .handler(new FileClientInitializer(file));
+                    .handler(new FileClientInitializer());
             ChannelFuture f = b.connect().sync();
             f.channel().closeFuture().sync();
         } catch (InterruptedException e) {

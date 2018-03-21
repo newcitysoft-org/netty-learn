@@ -1,26 +1,19 @@
 package com.newcitysoft.study.netty.filetransfer.client;
 
-import io.netty.channel.ChannelFuture;
-import io.netty.channel.ChannelFutureListener;
+import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerAdapter;
 import io.netty.channel.ChannelHandlerContext;
-import io.netty.handler.stream.ChunkedStream;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.RandomAccessFile;
+import java.nio.ByteBuffer;
+import java.nio.channels.FileChannel;
 
 /**
  * @author lixin.tian@renren-inc.com
  * @date 2018/3/20 19:14
  */
 public class FileClientHandler extends ChannelHandlerAdapter {
-
-    private final File file;
-
-    public FileClientHandler(File file) {
-        this.file = file;
-    }
 
     private static String path = "D:\\data\\socket\\client\\123.txt";
 
@@ -30,9 +23,29 @@ public class FileClientHandler extends ChannelHandlerAdapter {
     }
 
     @Override
+    public void channelInactive(ChannelHandlerContext ctx) throws Exception {
+        System.out.println(ctx.channel().localAddress().toString() + " channelInactive");
+    }
+
+    @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-        System.out.println(msg);
-        //ctx.writeAndFlush(path);
+        RandomAccessFile file = new RandomAccessFile("d:\\test\\456.txt", "rw");
+        FileChannel channel = file.getChannel();
+        ByteBuffer byteBuffer = ByteBuffer.allocate(128);
+
+        ByteBuf buf = (ByteBuf) msg;
+        byteBuffer.put(buf.getByte(buf.readableBytes()));
+        byteBuffer.flip();
+        while(byteBuffer.hasRemaining()) {
+            channel.write(byteBuffer);
+        }
+        System.out.println(channel.position());
+        close(file, channel);
+    }
+
+    public static void close(RandomAccessFile file, FileChannel channel) throws IOException {
+        channel.close();
+        file.close();
     }
 
     @Override

@@ -4,12 +4,11 @@ import io.netty.channel.ChannelInitializer;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.handler.codec.bytes.ByteArrayEncoder;
 
+
 /**
- * Created with IntelliJ IDEA.
- * User: fuzhengwei
- * Date: 15-11-8
- * Time: 下午1:57
- * To change this template use File | Settings | File Templates.
+ * 服务端流水线配置类
+ * @author lixin.tian@renren-inc.com
+ * @date 2018-03-21 14:29
  */
 public class FileServerInitializer extends ChannelInitializer<SocketChannel> {
     @Override
@@ -23,7 +22,7 @@ public class FileServerInitializer extends ChannelInitializer<SocketChannel> {
 
         ch.pipeline().addLast(new ByteArrayEncoder());
         // 在管道中添加我们自己的接收数据实现方法
-        ch.pipeline().addLast(new FileServerInitializer());
+        ch.pipeline().addLast(new FileServerHandler());
 
     }
 }

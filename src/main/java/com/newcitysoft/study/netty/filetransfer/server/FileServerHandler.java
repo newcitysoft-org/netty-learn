@@ -17,7 +17,7 @@ public class FileServerHandler extends ChannelHandlerAdapter {
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
-        ctx.writeAndFlush("HELLO: Type the path of the file to retrieve.\n");
+        //ctx.writeAndFlush("HELLO: Type the path of the file to retrieve.\n");
     }
 
     @Override

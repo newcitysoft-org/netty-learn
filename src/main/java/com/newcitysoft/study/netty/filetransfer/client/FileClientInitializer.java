@@ -16,21 +16,13 @@ import java.io.File;
  */
 public class FileClientInitializer extends ChannelInitializer<SocketChannel> {
 
-    private File file;
-
-    public FileClientInitializer(File file) {
-        this.file = file;
-    }
-
     @Override
     protected void initChannel(SocketChannel socketChannel) throws Exception {
         ChannelPipeline pipeline = socketChannel.pipeline();
         //添加 ChunkedWriteHandler以处理作为ChunkedInput传入的数据
         pipeline.addLast(
-                new StringDecoder(CharsetUtil.UTF_8),
+//                new StringDecoder(CharsetUtil.UTF_8),
                 new StringEncoder(CharsetUtil.UTF_8),
-                new ChunkedWriteHandler(),
-                new FileClientHandler(file));
-
+                new FileClientHandler());
     }
 }

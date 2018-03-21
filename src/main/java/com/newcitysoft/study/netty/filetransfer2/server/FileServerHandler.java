@@ -14,11 +14,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
- * Created with IntelliJ IDEA.
- * User: fuzhengwei
- * Date: 15-11-8
- * Time: 下午1:58
- * To change this template use File | Settings | File Templates.
+ * 文件服务处理类
+ * @author lixin.tian@renren-inc.com
+ * @date 2018-03-21 14:31
  */
 @ChannelHandler.Sharable
 public class FileServerHandler extends ChannelHandlerAdapter {
@@ -50,7 +48,7 @@ public class FileServerHandler extends ChannelHandlerAdapter {
         if (first) {
             System.out.println("创建文件");
             first = false;
-            File file = new File("D://test" + new SimpleDateFormat("yyyymmddhhmmss").format(new Date()) + ".zip");
+            File file = new File("D://test//" + new SimpleDateFormat("yyyymmddhhmmss").format(new Date()) + ".txt");
             if (!file.exists()) {
                 try {
                     file.createNewFile();

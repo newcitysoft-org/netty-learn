@@ -26,7 +26,7 @@ public class FileServer implements Runnable{
             b.group(bossGroup, workGroup);
             b.channel(NioServerSocketChannel.class);
             b.option(ChannelOption.SO_BACKLOG, 1024);
-            b.childHandler(new FileServerHandler());
+            b.childHandler(new FileServerInitializer());
 
             // 绑定端口
             ChannelFuture f = b.bind(7397).sync();
