@@ -1,4 +1,4 @@
-package com.newcitysoft.study.netty.filetransfer;
+package com.newcitysoft.study.netty.filetransfer.server;
 
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerAdapter;

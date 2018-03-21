@@ -1,5 +1,6 @@
-package com.newcitysoft.study.netty.filetransfer;
+package com.newcitysoft.study.netty.filetransfer.server;
 
+import com.newcitysoft.study.netty.filetransfer.common.Const;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.EventLoopGroup;

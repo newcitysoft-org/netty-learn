@@ -1,7 +1,9 @@
-package com.newcitysoft.study.netty.filetransfer;
+package com.newcitysoft.study.netty.filetransfer.client;
 
+import com.newcitysoft.study.netty.filetransfer.common.Const;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelFuture;
+import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
@@ -23,6 +25,7 @@ public class FileClient {
             Bootstrap b = new Bootstrap();
             b.group(group)
                     .channel(NioSocketChannel.class)
+                    .option(ChannelOption.TCP_NODELAY, true)
                     .remoteAddress(new InetSocketAddress(host, port))
                     .handler(new FileClientInitializer(file));
             ChannelFuture f = b.connect().sync();

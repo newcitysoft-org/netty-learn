@@ -1,4 +1,4 @@
-package com.newcitysoft.study.netty.filetransfer;
+package com.newcitysoft.study.netty.filetransfer.common;
 
 /**
  * @author lixin.tian@renren-inc.com
