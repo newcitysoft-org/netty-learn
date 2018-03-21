@@ -11,6 +11,7 @@ import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.codec.serialization.ClassResolvers;
 import io.netty.handler.codec.serialization.ObjectDecoder;
 import io.netty.handler.codec.serialization.ObjectEncoder;
+import io.netty.handler.stream.ChunkedWriteHandler;
 import org.junit.Test;
 
 /**
@@ -27,9 +28,9 @@ public class Client {
 
                 @Override
                 protected void initChannel(SocketChannel ch) throws Exception {
-                    // ch.pipeline().addLast(new ChunkedWriteHandler());
                     ch.pipeline().addLast(new ObjectDecoder(ClassResolvers.weakCachingConcurrentResolver(null)));
                     ch.pipeline().addLast(new ObjectEncoder());
+                    ch.pipeline().addLast(new ChunkedWriteHandler());
                     ch.pipeline().addLast(new ClientHandler(filePath));
                 }
             });
@@ -44,7 +45,7 @@ public class Client {
     public  void testClient() {
         int port = 7777;
         try {
-            String filePath="D:\\data\\socket\\client\\db.jpg";
+            String filePath="D:\\data\\socket\\client\\db.avi";
             new Client().connect(port, "127.0.0.1", filePath);
         } catch (Exception e) {
             e.printStackTrace();
