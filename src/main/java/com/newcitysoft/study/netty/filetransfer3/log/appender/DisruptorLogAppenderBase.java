@@ -86,8 +86,9 @@ public class DisruptorLogAppenderBase<E> extends UnsynchronizedAppenderBase<E>
 
 	@Override
 	public void stop() {
-		if (!isStarted())
+		if (!isStarted()) {
 			return;
+		}
 		// mark this appender as stopped so that Worker can also
 		// processPriorToRemoval if it is invoking aii.appendLoopOnAppenders
 		// and sub-appenders consume the interruption

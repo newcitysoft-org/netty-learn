@@ -7,9 +7,9 @@ import com.newcitysoft.study.netty.filetransfer3.log.appender.disruptor.LogProdu
 
 /**
  * 自定义异步记录日志Appender. 替换掉以前的BlockingQueue队列，改用Disruptor无锁内存队列.
- * 
+ *
  * @author 刘源
- * 
+ *
  */
 public class DisruptorLogAppender extends
 		DisruptorLogAppenderBase<ILoggingEvent> {
@@ -18,7 +18,7 @@ public class DisruptorLogAppender extends
 
 	/**
 	 * Events of level TRACE, DEBUG and INFO are deemed to be discardable.
-	 * 
+	 *
 	 * @param event
 	 * @return true if the event is of level TRACE, DEBUG or INFO false
 	 *         otherwise.
@@ -32,10 +32,12 @@ public class DisruptorLogAppender extends
 	@Override
 	protected void preprocess(ILoggingEvent eventObject) {
 		eventObject.prepareForDeferredProcessing();
-		if (includeCallerData)
+		if (includeCallerData) {
 			eventObject.getCallerData();
+		}
 	}
 
+	@Override
 	protected void put(ILoggingEvent event) {
 		ringBuffer.publishEvent(LogProducerTranslator.TRANSLATOR, event,aai);
 	}
