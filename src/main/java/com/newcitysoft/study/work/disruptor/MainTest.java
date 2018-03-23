@@ -1,15 +1,10 @@
 package com.newcitysoft.study.work.disruptor;
 
-import com.alibaba.fastjson.JSONArray;
+import com.lmax.disruptor.EventFactory;
+import com.lmax.disruptor.EventHandler;
 import com.lmax.disruptor.RingBuffer;
-import com.newcitysoft.study.work.common.TaskAsyncExecutor;
-import com.newcitysoft.study.work.entity.TaskItem;
-import com.newcitysoft.study.work.entity.TaskResult;
-import com.newcitysoft.study.work.netty.client.Client;
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
@@ -19,43 +14,52 @@ import java.util.concurrent.Executors;
  */
 public class MainTest {
     private static Executor executor = Executors.newCachedThreadPool();
-    private static TaskFactory factory = new TaskFactory();
-    private static TaskHandler handler = new TaskHandler();
+
+    private static class Message {
+        private String content;
+
+        public String getContent() {
+            return content;
+        }
+
+        public void setContent(String content) {
+            this.content = content;
+        }
+    }
+
     @Test
-    public void test() {
+    public void test2() throws InterruptedException {
 
-        DisruptorFactory factory = new DisruptorFactory<TaskItem>(executor, MainTest.factory, handler);
-        factory.start();
-        RingBuffer<TaskItem> ringBuffer = factory.getRingBuffer();
-
-        TaskProducer producer = new TaskProducer(ringBuffer);
-
-        Client client = Client.getInstance();
-        client.getTasks("md5", new TaskAsyncExecutor() {
-            List<TaskResult> taskResults = new ArrayList<>();
-
+        EventFactory<Message> factory = new EventFactory<Message>() {
             @Override
-            public void execute(String tasks) {
-                List<TaskItem> tks = JSONArray.parseArray(tasks, TaskItem.class);
-                tks.forEach(task -> {
-                    producer.onData(task);
-                });
+            public Message newInstance() {
+                return new Message();
             }
+        };
 
+        EventHandler<Message> handler = new EventHandler<Message>() {
             @Override
-            public void finish() {
-                System.out.println("Report is success!");
-                try {
-                    Thread.sleep(2000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+            public void onEvent(Message s, long l, boolean b) throws Exception {
+                System.out.println(s.getContent());
             }
+        };
 
-            @Override
-            public List<TaskResult> report() {
-                return taskResults;
-            }
-        });
+        DisruptorFactory disruptorFactory = new DisruptorFactory<Message>(executor, factory, handler);
+        disruptorFactory.start();
+        RingBuffer<Message> ringBuffer = disruptorFactory.getRingBuffer();
+
+       for (int i=0; i<100; i++) {
+           //Grab the next sequence
+           long sequence = ringBuffer.next();
+           try{
+               Message message = ringBuffer.get(sequence);
+
+               message.setContent(System.currentTimeMillis() + "-" + i);
+           }finally{
+               ringBuffer.publish(sequence);
+               System.out.println("生产："+i);
+               Thread.sleep(10);
+           }
+       }
     }
 }

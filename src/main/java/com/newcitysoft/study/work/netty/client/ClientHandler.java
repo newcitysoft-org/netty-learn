@@ -1,10 +1,15 @@
 package com.newcitysoft.study.work.netty.client;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.lmax.disruptor.RingBuffer;
 import com.newcitysoft.study.work.common.ClientManger;
 import com.newcitysoft.study.work.common.TaskAsyncExecutor;
+import com.newcitysoft.study.work.disruptor.DisruptorFactory;
+import com.newcitysoft.study.work.disruptor.TaskProducer;
 import com.newcitysoft.study.work.entity.Message;
 import com.newcitysoft.study.work.entity.MessageType;
+import com.newcitysoft.study.work.entity.TaskItem;
 import com.newcitysoft.study.work.entity.TaskResult;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
@@ -22,10 +27,10 @@ public class ClientHandler extends ChannelHandlerAdapter {
     private static final Logger logger = Logger.getLogger(ClientHandler.class.getName());
 
     private Message message;
-    private TaskAsyncExecutor executor;
+    private DisruptorFactory factory;
 
-    public ClientHandler(Message message, TaskAsyncExecutor executor) {
-        this.executor = executor;
+    public ClientHandler(Message message, DisruptorFactory factory) {
+        this.factory = factory;
         this.message = message;
     }
 
@@ -51,16 +56,16 @@ public class ClientHandler extends ChannelHandlerAdapter {
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         Message message = (Message) msg;
         System.out.println(message.toString());
-        handleChannelRead(ctx, this.executor, message);
+        handleChannelRead(ctx, this.factory, message);
     }
 
     /**
      * 处理通道读操作
      * @param ctx
-     * @param executor
+     * @param factory
      * @param message
      */
-    private static void handleChannelRead(ChannelHandlerContext ctx, TaskAsyncExecutor executor, Message message) {
+    private void handleChannelRead(ChannelHandlerContext ctx, DisruptorFactory factory, Message message) {
         int type = message.getHeader().getType();
         Object body = message.getBody();
 
@@ -74,13 +79,25 @@ public class ClientHandler extends ChannelHandlerAdapter {
         MessageType messageType = MessageType.fromTypeName(type);
         switch (messageType) {
             case SEND:
-                execAndReport(ctx, executor, temp);
+                //execAndReport(ctx, executor, temp);
+                produce(temp);
                 break;
             case RESPONSE:
-                executor.finish();
+                //executor.finish();
                 break;
             default:
                 break;
+        }
+    }
+
+    public void produce(String tasks) {
+        if(factory != null){
+            RingBuffer<TaskItem> ringBuffer = this.factory.getRingBuffer();
+            TaskProducer producer = new TaskProducer(ringBuffer);
+            List<TaskItem> tks = JSONArray.parseArray(tasks, TaskItem.class);
+            tks.forEach(task -> {
+                producer.onData(task);
+            });
         }
     }
 

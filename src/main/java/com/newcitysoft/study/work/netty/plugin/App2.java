@@ -40,7 +40,7 @@ public class App2 {
 
     public static void main(String[] args) {
         Client client = Client.getInstance();
-        client.getTasks("md5", new TaskAsyncExecutor() {
+        client.getTasks("md5", new TaskAsyncExecutor<String>() {
             List<TaskResult> taskResults = new ArrayList<>();
 
             @Override

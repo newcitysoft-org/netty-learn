@@ -25,7 +25,7 @@ public class App {
     private static Runnable runnable = new Runnable() {
         @Override
         public void run() {
-            client.getTasks("md5", new TaskAsyncExecutor() {
+            client.getTasks("md5", new TaskAsyncExecutor<String>() {
                 List<TaskResult> results = new LinkedList<>();
                 @Override
                 public void execute(String tasks) {

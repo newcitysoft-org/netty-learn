@@ -18,7 +18,7 @@ public class App {
     public static void main(String[] args) throws InterruptedException {
         Client client = Client.getInstance();
 
-        client.asyncGetTasks("md5", new TaskAsyncExecutor() {
+        client.asyncGetTasks("md5", new TaskAsyncExecutor<String>() {
             List<TaskResult> results = new LinkedList<>();
             @Override
             public void execute(String tasks) {

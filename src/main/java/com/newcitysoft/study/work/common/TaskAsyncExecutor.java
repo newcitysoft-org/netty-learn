@@ -9,12 +9,12 @@ import java.util.List;
  * @author lixin.tian@renren-inc.com
  * @date 2018/3/14 15:39
  */
-public interface TaskAsyncExecutor {
+public interface TaskAsyncExecutor<T> {
     /**
      * 执行回调方法，但不支持直接上传
-     * @param tasks
+     * @param t
      */
-    void execute(String tasks);
+    void execute(T t);
     /**
      * 处理服务器相应
      */

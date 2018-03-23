@@ -3,8 +3,12 @@ package com.newcitysoft.study.work.netty.client;
 import com.newcitysoft.study.work.common.ClientManger;
 import com.newcitysoft.study.work.common.Const;
 import com.newcitysoft.study.work.common.TaskAsyncExecutor;
+import com.newcitysoft.study.work.disruptor.DisruptorFactory;
+import com.newcitysoft.study.work.disruptor.TaskFactory;
+import com.newcitysoft.study.work.disruptor.TaskHandler;
 import com.newcitysoft.study.work.entity.Message;
 import com.newcitysoft.study.work.entity.MessageType;
+import com.newcitysoft.study.work.entity.TaskItem;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
@@ -35,9 +39,11 @@ public class Client {
     public static Client getInstance(){ return instance; }
 
     private void connect(Message message, TaskAsyncExecutor executor) {
-        ClientHandler clientHandler = new ClientHandler(message, executor);
         // 配置客户端NIO线程组
         EventLoopGroup group = new NioEventLoopGroup();
+        // 配置消息队列的对象
+        DisruptorFactory factory = new DisruptorFactory<TaskItem>(group, new TaskFactory(), new TaskHandler(executor));
+        ClientHandler clientHandler = new ClientHandler(message, factory);
         try {
             Bootstrap b = new Bootstrap();
             b.group(group)
@@ -54,6 +60,8 @@ public class Client {
                     });
 
             ChannelFuture f = b.connect(host, port).sync();
+
+            factory.start();
             f.channel().closeFuture().sync();
 
         } catch (InterruptedException e) {
