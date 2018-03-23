@@ -112,6 +112,6 @@ public class ClientHandler extends ChannelHandlerAdapter {
     @Override
     public void channelReadComplete(ChannelHandlerContext ctx) throws Exception {
         ctx.flush();
-        //ctx.close();
+        ctx.close();
     }
 }

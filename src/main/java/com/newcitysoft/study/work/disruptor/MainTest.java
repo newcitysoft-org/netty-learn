@@ -1,44 +1,35 @@
-package com.newcitysoft.study.work.netty.plugin;
-
+package com.newcitysoft.study.work.disruptor;
 
 import com.alibaba.fastjson.JSONArray;
+import com.lmax.disruptor.RingBuffer;
 import com.newcitysoft.study.work.common.TaskAsyncExecutor;
 import com.newcitysoft.study.work.entity.TaskItem;
 import com.newcitysoft.study.work.entity.TaskResult;
 import com.newcitysoft.study.work.netty.client.Client;
-import com.newcitysoft.study.work.util.MD5Utils;
+import org.junit.Test;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 /**
  * @author lixin.tian@renren-inc.com
- * @date 2018/3/14 13:47
+ * @date 2018/3/23 11:11
  */
-public class App2 {
+public class MainTest {
+    private static Executor executor = Executors.newCachedThreadPool();
+    private static TaskItemFactory factory = new TaskItemFactory();
+    private static TaskItemHandler handler = new TaskItemHandler();
+    @Test
+    public void test() {
 
-    public static List<TaskResult> doTasks(List<TaskItem> items) {
-        List<TaskResult> results = new LinkedList<>();
-        items.forEach(task -> {
-            results.add(doTasks(task));
-        });
+        DisruptorFactory factory = new DisruptorFactory<TaskItem>(executor, MainTest.factory, handler);
+        factory.start();
+        RingBuffer<TaskItem> ringBuffer = factory.getRingBuffer();
 
-        return results;
-    }
+        TaskItemProducer producer = new TaskItemProducer(ringBuffer);
 
-    public static TaskResult doTasks(TaskItem task) {
-        TaskResult result = new TaskResult();
-
-        result.setTaskId(task.getTaskId());
-        result.setGetTime(task.getTimestamp());
-        result.setReportTime(System.currentTimeMillis());
-        result.setResult(MD5Utils.md5(task.getContent().toString()));
-
-        return result;
-    }
-
-    public static void main(String[] args) {
         Client client = Client.getInstance();
         client.getTasks("md5", new TaskAsyncExecutor() {
             List<TaskResult> taskResults = new ArrayList<>();
@@ -46,7 +37,9 @@ public class App2 {
             @Override
             public void execute(String tasks) {
                 List<TaskItem> tks = JSONArray.parseArray(tasks, TaskItem.class);
-                taskResults.addAll(doTasks(tks));
+                tks.forEach(task -> {
+                    producer.onData(task);
+                });
             }
 
             @Override
@@ -57,7 +50,6 @@ public class App2 {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                main(args);
             }
 
             @Override

@@ -10,7 +10,6 @@ import com.newcitysoft.study.work.util.MD5Utils;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
