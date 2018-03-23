@@ -7,9 +7,9 @@ import com.newcitysoft.study.work.entity.TaskItem;
  * @author lixin.tian@renren-inc.com
  * @date 2018/3/23 10:59
  */
-public class TaskItemProducer {
+public class TaskProducer {
     private final RingBuffer<TaskItem> ringBuffer;
-    public TaskItemProducer(RingBuffer<TaskItem> ringBuffer) {
+    public TaskProducer(RingBuffer<TaskItem> ringBuffer) {
         this.ringBuffer = ringBuffer;
     }
 

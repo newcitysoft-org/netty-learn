@@ -19,8 +19,8 @@ import java.util.concurrent.Executors;
  */
 public class MainTest {
     private static Executor executor = Executors.newCachedThreadPool();
-    private static TaskItemFactory factory = new TaskItemFactory();
-    private static TaskItemHandler handler = new TaskItemHandler();
+    private static TaskFactory factory = new TaskFactory();
+    private static TaskHandler handler = new TaskHandler();
     @Test
     public void test() {
 
@@ -28,7 +28,7 @@ public class MainTest {
         factory.start();
         RingBuffer<TaskItem> ringBuffer = factory.getRingBuffer();
 
-        TaskItemProducer producer = new TaskItemProducer(ringBuffer);
+        TaskProducer producer = new TaskProducer(ringBuffer);
 
         Client client = Client.getInstance();
         client.getTasks("md5", new TaskAsyncExecutor() {

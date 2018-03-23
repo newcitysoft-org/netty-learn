@@ -34,7 +34,7 @@ public class Client {
     private Client(){}
     public static Client getInstance(){ return instance; }
 
-    public void connect(Message message, TaskAsyncExecutor executor) {
+    private void connect(Message message, TaskAsyncExecutor executor) {
         ClientHandler clientHandler = new ClientHandler(message, executor);
         // 配置客户端NIO线程组
         EventLoopGroup group = new NioEventLoopGroup();

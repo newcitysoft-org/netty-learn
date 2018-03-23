@@ -5,9 +5,9 @@ import com.lmax.disruptor.EventTranslatorOneArg;
 import com.lmax.disruptor.RingBuffer;
 import com.newcitysoft.study.work.entity.TaskItem;
 
-public class TaskItemProducerWithTranslator {
+public class TaskProducerWithTranslator {
 	private final RingBuffer<TaskItem> ringBuffer;
-	public TaskItemProducerWithTranslator(RingBuffer<TaskItem> ringBuffer) {
+	public TaskProducerWithTranslator(RingBuffer<TaskItem> ringBuffer) {
 		this.ringBuffer = ringBuffer;
 	}
 	private static final EventTranslatorOneArg<TaskItem,String> TRANSLATOR = new EventTranslatorOneArg<TaskItem, String>()
