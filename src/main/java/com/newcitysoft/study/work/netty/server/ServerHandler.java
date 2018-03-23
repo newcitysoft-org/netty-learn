@@ -1,15 +1,9 @@
 package com.newcitysoft.study.work.netty.server;
 
-import com.newcitysoft.study.work.common.Const;
 import com.newcitysoft.study.work.common.ServerManager;
 import com.newcitysoft.study.work.entity.Message;
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
-import io.netty.channel.ChannelFuture;
-import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerAdapter;
 import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.ChannelPromise;
 
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
