@@ -37,6 +37,7 @@ public class ClientHandler extends ChannelHandlerAdapter {
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
         logger.warning("Unexpected exception from downstream :" + cause.getMessage());
+        cause.printStackTrace();
         ctx.close();
     }
 
@@ -129,6 +130,6 @@ public class ClientHandler extends ChannelHandlerAdapter {
     @Override
     public void channelReadComplete(ChannelHandlerContext ctx) throws Exception {
         ctx.flush();
-        ctx.close();
+//        ctx.close();
     }
 }
